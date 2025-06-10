@@ -1,0 +1,17 @@
+//
+//  TestProject3_App_App.swift
+//  TestProject3(App)
+//
+//  Created by Evelyn Wijaya on 07/06/25.
+//
+
+import SwiftUI
+
+@main
+struct TestProject3_App_App: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
