@@ -5,69 +5,135 @@
 //  Created by Evelyn Wijaya on 07/06/25.
 //
 
-
 import SpriteKit
+import UIKit
 
-class GameScene: SKScene {
-    let circle = SKSpriteNode(imageNamed: "bumi")
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    struct PhysicsCategory {
+        static let none: UInt32 = 0
+        static let needle: UInt32 = 0b1
+        static let tanah: UInt32 = 0b10
+        static let laut: UInt32 = 0b100
+    }
+
+    let circle = SKNode()
+    let laut = SKSpriteNode(imageNamed: "bumilaut")
+    let tanah = SKSpriteNode(imageNamed: "bumitanah")
     let needleContainer = SKNode()
-
+    
     override func didMove(to view: SKView) {
         backgroundColor = .white
-        
-        circle.size = CGSize(width: 160, height: 160)
+        physicsWorld.contactDelegate = self
+        physicsWorld.gravity = .zero
+
         circle.position = CGPoint(x: size.width / 2, y: size.height / 2)
         addChild(circle)
-        
-        // Tambahkan needle container ke dalam lingkaran
+
+        // Setup laut
+        laut.size = CGSize(width: 160, height: 160)
+        laut.position = .zero
+        circle.addChild(laut)
+
+        // Setup tanah
+        tanah.size = laut.size
+        tanah.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        tanah.position = .zero
+        circle.addChild(tanah)
+
+        // Rotasi
+        let rotate = SKAction.rotate(byAngle: -.pi, duration: 2)
+        circle.run(.repeatForever(rotate))
+
+        // Container untuk pisau
         circle.addChild(needleContainer)
 
-        // Animasi rotasi lingkaran
-        let rotate = SKAction.rotate(byAngle: .pi, duration: 1)
-        let forever = SKAction.repeatForever(rotate)
-        circle.run(forever)
+        // Add invisible physics zones
+        addPhysicsZones()
     }
-    
+
+    func addPhysicsZones() {
+        // Laut (besar) - game over
+        let lautArea = SKShapeNode(circleOfRadius: 80)
+        lautArea.strokeColor = .clear
+        lautArea.fillColor = .blue
+        lautArea.alpha = 0.01
+        lautArea.position = circle.position
+        lautArea.physicsBody = SKPhysicsBody(circleOfRadius: 80)
+        lautArea.physicsBody?.isDynamic = false
+        lautArea.physicsBody?.categoryBitMask = PhysicsCategory.laut
+        lautArea.physicsBody?.contactTestBitMask = PhysicsCategory.needle
+        addChild(lautArea)
+
+        // Tanah (lebih kecil) - sukses
+        let tanahArea = SKShapeNode(circleOfRadius: 80)
+        tanahArea.strokeColor = .clear
+        tanahArea.fillColor = .green
+        tanahArea.alpha = 0.01
+        tanahArea.position = circle.position
+        tanahArea.physicsBody = SKPhysicsBody(circleOfRadius: 80)
+        tanahArea.physicsBody?.isDynamic = false
+        tanahArea.physicsBody?.categoryBitMask = PhysicsCategory.tanah
+        tanahArea.physicsBody?.contactTestBitMask = PhysicsCategory.needle
+        addChild(tanahArea)
+    }
+
     func shootNeedle() {
         let needle = SKSpriteNode(imageNamed: "pohon")
         let needleLength: CGFloat = 40
-        
         needle.size = CGSize(width: 20, height: needleLength)
-        
-        
-//        let needle = SKSpriteNode(color: .black, size: CGSize(width: 4, height: needleLength))
-        
-        // Posisi awal jarum (di atas lingkaran)
-        let startY = circle.position.y + 150
+
+        let startY = circle.position.y + 200
         needle.position = CGPoint(x: circle.position.x, y: startY)
         needle.zRotation = 0
+        needle.name = "needle"
+
+        // Add physics body
+        needle.physicsBody = SKPhysicsBody(rectangleOf: needle.size)
+        needle.physicsBody?.isDynamic = true
+        needle.physicsBody?.categoryBitMask = PhysicsCategory.needle
+        needle.physicsBody?.contactTestBitMask = PhysicsCategory.tanah | PhysicsCategory.laut
+        needle.physicsBody?.collisionBitMask = PhysicsCategory.none
+
         addChild(needle)
-        
-        // Target: titik di permukaan luar lingkaran bagian atas
-        let circleRadius: CGFloat = 80
-        let targetPoint = CGPoint(x: circle.position.x, y: circle.position.y + circleRadius + needleLength / 2)
-        
-        let move = SKAction.move(to: targetPoint, duration: 0.2)
-        
-        let stickToCircle = SKAction.run {
-            needle.removeAllActions()
 
-            // Ubah posisi relatif ke circle
-            let relativePosition = self.convert(needle.position, to: self.needleContainer)
-            needle.removeFromParent()
-            needle.position = relativePosition
-
-            // Koreksi rotasi agar tetap tegak
-            needle.zRotation = -self.circle.zRotation
-
-            self.needleContainer.addChild(needle)
-        }
-        
-        let sequence = SKAction.sequence([move, stickToCircle])
-        needle.run(sequence)
+        // Move ke tengah
+        let move = SKAction.move(to: CGPoint(x: circle.position.x, y: circle.position.y), duration: 0.4)
+        needle.run(move)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         shootNeedle()
+    }
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        let (first, second) = (contact.bodyA.node, contact.bodyB.node)
+
+        guard let nodeA = first, let nodeB = second else { return }
+
+        let needle = (nodeA.name == "needle") ? nodeA : nodeB
+        let other = (needle === nodeA) ? nodeB : nodeA
+
+        if other.physicsBody?.categoryBitMask == PhysicsCategory.tanah {
+            // Nancep di tanah
+            let localPos = convert(needle.position, to: needleContainer)
+            needle.removeFromParent()
+            needle.position = localPos
+            needle.zRotation = -circle.zRotation
+            needle.physicsBody = nil
+            needleContainer.addChild(needle)
+        } else if other.physicsBody?.categoryBitMask == PhysicsCategory.laut {
+            // Kena laut
+            needle.removeFromParent()
+            showLoseAlert()
+        }
+    }
+
+    func showLoseAlert() {
+        if let view = self.view, let vc = view.window?.rootViewController {
+            let alert = UIAlertController(title: "You lose", message: "Kena laut!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            vc.present(alert, animated: true)
+        }
     }
 }
