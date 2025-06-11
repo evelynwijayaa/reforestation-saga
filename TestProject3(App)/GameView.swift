@@ -9,14 +9,9 @@ import SpriteKit
 import SwiftUI
 
 struct GameView: View {
-    let scene: GameScene
     @StateObject private var detector = EyeBlinkDetector()
-
-    init() {
-        scene = GameScene()
-        scene.size = CGSize(width: 300, height: 600)
-        scene.scaleMode = .resizeFill
-    }
+    @State private var showAlert = false
+    @State private var scene: GameScene?
 
     var body: some View {
         ZStack {
@@ -25,23 +20,30 @@ struct GameView: View {
             Image("background-level-1")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
-            //            Text(detector.predictionLabel)
-            //                .font(.title)
-            //                .foregroundColor(.white)
-            //                .padding()
-            //                .background(Color.black.opacity(0.6))
-            //                .clipShape(RoundedRectangle(cornerRadius: 10))
-
-            SpriteView(scene: scene, options: [.allowsTransparency])
-                .frame(width: 300, height: 600)
-                .ignoresSafeArea()
+            if let scene = scene {
+                SpriteView(scene: scene, options: [.allowsTransparency])
+                    .frame(width: 300, height: 600)
+                    .ignoresSafeArea()
+            }
+            
         }
         .onAppear {
             detector.startCamera()
+            let newScene = GameScene(size: CGSize(width: 400, height: 800))
+            newScene.scaleMode = .resizeFill
+            newScene.onFailZoneHit = {
+                showAlert = true
+            }
+            self.scene = newScene
         }
         // 🔥 Detect change and trigger function
         .onChange(of: detector.predictionLabel) {
-            scene.triggerAction(detector.predictionLabel)
+            scene!.triggerAction(detector.predictionLabel)
+        }
+        .alert("Mission Failed!", isPresented: $showAlert) {
+            Button("Try Again", role: .cancel) { }
+        } message: {
+            Text("Jarum mengenai zona terlarang.")
         }
     }
 }

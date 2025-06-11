@@ -7,22 +7,24 @@
 
 import SpriteKit
 import SwiftUI
+import AudioToolbox
 
 class GameScene: SKScene {
     let circle = SKSpriteNode(imageNamed: "bumi")
     let needleContainer = SKNode()
+    var onFailZoneHit: (() -> Void)? // Closure untuk trigger alert dari SwiftUI
+    let mechanics = GameMechanics()
 
     func triggerAction(_ state: String) {
         if state == "Blink detected" {
             shootNeedle()
-        } else if state == "No Face" {
-            Alert(title: Text("Wajah tidak terdeteksi"), message: Text("Pastikan wajah Anda di depan kamera"), dismissButton: .default(Text("OK")))
         }
     }
 
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear
         view.allowsTransparency = true
+        mechanics.setupBackgroundMusic(in: self)
 
         circle.size = CGSize(width: 160, height: 160)
         circle.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -30,11 +32,22 @@ class GameScene: SKScene {
 
         // Tambahkan needle container ke dalam lingkaran
         circle.addChild(needleContainer)
+        
+        let failZone = SKShapeNode(rectOf: CGSize(width: 110, height: 40))
+//        failZone.fillColor = .red.withAlphaComponent(0.3) // untuk debug, bisa diset ke 0 nanti
+        failZone.strokeColor = .clear
+        failZone.position = CGPoint(x: -10, y: 80) // relatif terhadap center circle
+        failZone.name = "failZone"
+        circle.addChild(failZone)
 
         // Animasi rotasi lingkaran
         let rotate = SKAction.rotate(byAngle: .pi, duration: 2)
         let forever = SKAction.repeatForever(rotate)
         circle.run(forever)
+    }
+    
+    func resetNeedles() {
+        needleContainer.removeAllChildren()
     }
 
     func shootNeedle() {
@@ -68,6 +81,20 @@ class GameScene: SKScene {
                 needle.position,
                 to: self.needleContainer
             )
+
+            // Cek apakah masuk area gagal
+            if let failZone = self.circle.childNode(withName: "failZone"),
+               failZone.contains(relativePosition) {
+                needle.removeFromParent()
+                self.resetNeedles()
+                
+                // Trigger alert
+                needle.removeAllChildren()
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                self.onFailZoneHit?()
+                return
+            }
+            
             needle.removeFromParent()
             needle.position = relativePosition
 
