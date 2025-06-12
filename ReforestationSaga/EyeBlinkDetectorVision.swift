@@ -72,7 +72,7 @@ class Coordinator: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBuf
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var overlayLayer = CAShapeLayer()
 
-    private var currentCameraPosition: AVCaptureDevice.Position = .back
+    private var currentCameraPosition: AVCaptureDevice.Position = .front
 
     private var videoOutput = AVCaptureVideoDataOutput()
 

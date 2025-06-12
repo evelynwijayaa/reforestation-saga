@@ -12,6 +12,7 @@ struct GameView: View {
     @StateObject private var detector = Coordinator()
     @State private var showAlert = false
     @State private var scene: GameScene?
+    
 
     var body: some View {
         ZStack {
@@ -24,11 +25,32 @@ struct GameView: View {
                 SpriteView(scene: scene, options: [.allowsTransparency])
                     .frame(width: 300, height: 600)
                     .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    VStack {
+                        Spacer()
+                        Text("Jumlah pohon: \(scene.getNeedleCount())")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding(12)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        Text("Rekor terbanyak: \(scene.highScore)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding(12)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .padding(.bottom)
+                    }
+                }
             }
+
             
+
         }
         .onAppear {
-//            detector.startCamera()
+            //            detector.startCamera()
             let newScene = GameScene(size: CGSize(width: 400, height: 800))
             newScene.scaleMode = .resizeFill
             newScene.onFailZoneHit = {
@@ -41,7 +63,7 @@ struct GameView: View {
             scene?.shootNeedle()
         }
         .alert("Mission Failed!", isPresented: $showAlert) {
-            Button("Try Again", role: .cancel) { }
+            Button("Try Again", role: .cancel) {}
         } message: {
             Text("Jarum mengenai zona terlarang.")
         }

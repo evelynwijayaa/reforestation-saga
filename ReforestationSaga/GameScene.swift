@@ -5,15 +5,16 @@
 //  Created by Evelyn Wijaya on 07/06/25.
 //
 
+import AudioToolbox
 import SpriteKit
 import SwiftUI
-import AudioToolbox
 
 class GameScene: SKScene {
     let circle = SKSpriteNode(imageNamed: "bumi")
     let needleContainer = SKNode()
-    var onFailZoneHit: (() -> Void)? // Closure untuk trigger alert dari SwiftUI
+    var onFailZoneHit: (() -> Void)?  // Closure untuk trigger alert dari SwiftUI
     let mechanics = GameMechanics()
+    @AppStorage("highScore") var highScore: Int = 0
 
     func triggerAction(_ state: String) {
         if state == "Blink detected" {
@@ -32,11 +33,11 @@ class GameScene: SKScene {
 
         // Tambahkan needle container ke dalam lingkaran
         circle.addChild(needleContainer)
-        
+
         let failZone = SKShapeNode(rectOf: CGSize(width: 110, height: 40))
-//        failZone.fillColor = .red.withAlphaComponent(0.3) // untuk debug, bisa diset ke 0 nanti
+        //        failZone.fillColor = .red.withAlphaComponent(0.3) // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
-        failZone.position = CGPoint(x: -10, y: 80) // relatif terhadap center circle
+        failZone.position = CGPoint(x: -10, y: 80)  // relatif terhadap center circle
         failZone.name = "failZone"
         circle.addChild(failZone)
 
@@ -45,9 +46,16 @@ class GameScene: SKScene {
         let forever = SKAction.repeatForever(rotate)
         circle.run(forever)
     }
-    
+
     func resetNeedles() {
+        if highScore < needleContainer.children.count {
+            highScore = needleContainer.children.count
+        }
         needleContainer.removeAllChildren()
+    }
+
+    func getNeedleCount() -> Int {
+        return needleContainer.children.count
     }
 
     func shootNeedle() {
@@ -84,17 +92,18 @@ class GameScene: SKScene {
 
             // Cek apakah masuk area gagal
             if let failZone = self.circle.childNode(withName: "failZone"),
-               failZone.contains(relativePosition) {
+                failZone.contains(relativePosition)
+            {
                 needle.removeFromParent()
                 self.resetNeedles()
-                
+
                 // Trigger alert
                 needle.removeAllChildren()
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                 self.onFailZoneHit?()
                 return
             }
-            
+
             needle.removeFromParent()
             needle.position = relativePosition
 
@@ -109,7 +118,7 @@ class GameScene: SKScene {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        shootNeedle()
+        //        shootNeedle()
     }
 }
 
