@@ -9,13 +9,13 @@ import SpriteKit
 import SwiftUI
 
 struct GameView: View {
-    @StateObject private var detector = EyeBlinkDetector()
+    @StateObject private var detector = Coordinator()
     @State private var showAlert = false
     @State private var scene: GameScene?
 
     var body: some View {
         ZStack {
-            CameraPreviewView(session: detector.captureSession)
+            EyeBlinkDetectorVision(coordinator: detector)
                 .edgesIgnoringSafeArea(.all)
             Image("background-level-1")
                 .resizable()
@@ -28,7 +28,7 @@ struct GameView: View {
             
         }
         .onAppear {
-            detector.startCamera()
+//            detector.startCamera()
             let newScene = GameScene(size: CGSize(width: 400, height: 800))
             newScene.scaleMode = .resizeFill
             newScene.onFailZoneHit = {
@@ -37,8 +37,8 @@ struct GameView: View {
             self.scene = newScene
         }
         // 🔥 Detect change and trigger function
-        .onChange(of: detector.predictionLabel) {
-            scene!.triggerAction(detector.predictionLabel)
+        .onChange(of: detector.blinkCount) {
+            scene?.shootNeedle()
         }
         .alert("Mission Failed!", isPresented: $showAlert) {
             Button("Try Again", role: .cancel) { }
