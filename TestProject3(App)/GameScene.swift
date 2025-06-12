@@ -20,6 +20,14 @@ class GameScene: SKScene {
             shootNeedle()
         }
     }
+    
+    func pauseMusic() {
+        mechanics.pauseMusic()
+    }
+    
+    func resumeMusic() {
+        mechanics.resumeMusic()
+    }
 
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear

@@ -12,9 +12,11 @@ struct GameView: View {
     @StateObject private var detector = EyeBlinkDetector()
     @State private var showAlert = false
     @State private var scene: GameScene?
+    @State private var isMuted: Bool = false
 
     var body: some View {
         ZStack {
+            
             CameraPreviewView(session: detector.captureSession)
                 .edgesIgnoringSafeArea(.all)
             Image("background-level-1")
@@ -24,6 +26,26 @@ struct GameView: View {
                 SpriteView(scene: scene, options: [.allowsTransparency])
                     .frame(width: 300, height: 600)
                     .ignoresSafeArea()
+            }
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        isMuted.toggle()
+                        if isMuted {
+                            scene?.pauseMusic()
+                        } else {
+                            scene?.resumeMusic()
+                        }
+                    } label: {
+                        Image(isMuted ? "sound-off" :"sound-on")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+                    }
+                    .padding(.horizontal, 24)
+                }
+                Spacer()
             }
             
         }
@@ -41,7 +63,7 @@ struct GameView: View {
             scene!.triggerAction(detector.predictionLabel)
         }
         .alert("Mission Failed!", isPresented: $showAlert) {
-            Button("Try Again", role: .cancel) { }
+            Button("Try Again", role: .cancel) {}
         } message: {
             Text("Jarum mengenai zona terlarang.")
         }
