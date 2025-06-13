@@ -12,13 +12,13 @@
 
 /* Begin PBXFileReference section */
 		043E97242DFBCC4A0089B6E0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		046D15D02DF4647D00341454 /* TestProject3(App).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TestProject3(App).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		046D15D02DF4647D00341454 /* ReforestationSaga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReforestationSaga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		046D15D22DF4647D00341454 /* TestProject3(App) */ = {
+		046D15D22DF4647D00341454 /* ReforestationSaga */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "TestProject3(App)";
+			path = ReforestationSaga;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -38,7 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				043E97242DFBCC4A0089B6E0 /* .gitignore */,
-				046D15D22DF4647D00341454 /* TestProject3(App) */,
+				046D15D22DF4647D00341454 /* ReforestationSaga */,
 				046D15D12DF4647D00341454 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,7 +46,7 @@
 		046D15D12DF4647D00341454 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				046D15D02DF4647D00341454 /* TestProject3(App).app */,
+				046D15D02DF4647D00341454 /* ReforestationSaga.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,9 +54,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		046D15CF2DF4647D00341454 /* TestProject3(App) */ = {
+		046D15CF2DF4647D00341454 /* ReforestationSaga */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 046D15DE2DF4647D00341454 /* Build configuration list for PBXNativeTarget "TestProject3(App)" */;
+			buildConfigurationList = 046D15DE2DF4647D00341454 /* Build configuration list for PBXNativeTarget "ReforestationSaga" */;
 			buildPhases = (
 				046D15CC2DF4647D00341454 /* Sources */,
 				046D15CD2DF4647D00341454 /* Frameworks */,
@@ -67,13 +67,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				046D15D22DF4647D00341454 /* TestProject3(App) */,
+				046D15D22DF4647D00341454 /* ReforestationSaga */,
 			);
-			name = "TestProject3(App)";
+			name = ReforestationSaga;
 			packageProductDependencies = (
 			);
 			productName = "TestProject3(App)";
-			productReference = 046D15D02DF4647D00341454 /* TestProject3(App).app */;
+			productReference = 046D15D02DF4647D00341454 /* ReforestationSaga.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -91,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 046D15CB2DF4647D00341454 /* Build configuration list for PBXProject "TestProject3(App)" */;
+			buildConfigurationList = 046D15CB2DF4647D00341454 /* Build configuration list for PBXProject "ReforestationSaga" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -105,7 +105,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				046D15CF2DF4647D00341454 /* TestProject3(App) */,
+				046D15CF2DF4647D00341454 /* ReforestationSaga */,
 			);
 		};
 /* End PBXProject section */
@@ -258,22 +258,22 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TestProject3(App)/Preview Content\"";
-				DEVELOPMENT_TEAM = 9MMZM98YRA;
+				DEVELOPMENT_ASSET_PATHS = "\"ReforestationSaga/Preview Content\"";
+				DEVELOPMENT_TEAM = 35K6F49UH8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "TestProject3-App--Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.evelyn.TestProject3-App-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nfajarsa.ReforestationSaga;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -288,22 +288,22 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TestProject3(App)/Preview Content\"";
-				DEVELOPMENT_TEAM = 9MMZM98YRA;
+				DEVELOPMENT_ASSET_PATHS = "\"ReforestationSaga/Preview Content\"";
+				DEVELOPMENT_TEAM = 35K6F49UH8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "TestProject3-App--Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.evelyn.TestProject3-App-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nfajarsa.ReforestationSaga;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -314,7 +314,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		046D15CB2DF4647D00341454 /* Build configuration list for PBXProject "TestProject3(App)" */ = {
+		046D15CB2DF4647D00341454 /* Build configuration list for PBXProject "ReforestationSaga" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046D15DC2DF4647D00341454 /* Debug */,
@@ -323,7 +323,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		046D15DE2DF4647D00341454 /* Build configuration list for PBXNativeTarget "TestProject3(App)" */ = {
+		046D15DE2DF4647D00341454 /* Build configuration list for PBXNativeTarget "ReforestationSaga" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046D15DF2DF4647D00341454 /* Debug */,
