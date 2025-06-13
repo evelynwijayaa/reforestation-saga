@@ -77,7 +77,7 @@ struct HomeView: View {
                             // Judul Game
                             VStack {
                                 Text("\n\nREFORESTATION\nSAGA")
-                                    .font(Font.custom("Electrolize", size: 32.28829))
+                                    .font(Font.custom("Gugi", size: 32.28829))
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
                                     .shadow(color: .white.opacity(0.4), radius:10)
