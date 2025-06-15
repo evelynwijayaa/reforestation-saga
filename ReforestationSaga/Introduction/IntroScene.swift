@@ -38,8 +38,7 @@ class IntroScene: SKScene {
     }
     
     private func setupMissionPanel() {
-        // Main mission panel
-        missionPanel = SKSpriteNode(color: UIColor.clear, size: CGSize(width: size.width - 40, height: 400)) //Index Blurring
+        missionPanel = SKSpriteNode(color: UIColor.clear, size: CGSize(width: size.width - 40, height: 400)) // Background blurring index
         missionPanel.size = CGSize(width: size.width*2, height: size.height)
         missionPanel.position = CGPoint(x: size.width/2, y: size.height / 2)
         missionPanel.zPosition = 5
@@ -49,7 +48,6 @@ class IntroScene: SKScene {
     }
     
     private func setupMissionContent() {
-        // Mission Title
         let missionTitle = SKLabelNode(text: "Mission 001")
         missionTitle.fontName = "Gugi"
         missionTitle.fontSize = 17
@@ -57,39 +55,34 @@ class IntroScene: SKScene {
         missionTitle.position = CGPoint(x: 0, y: 243)
         missionPanel.addChild(missionTitle)
         
-        // Mission Description
         setupMissionDescription()
         
-        // Instructions
         setupInstructions()
         
-        // Eye symbols
         setupEyeSymbols()
     }
     
     private func setupMissionDescription() {
         let descriptionLines = [
-            "Target Planet: Druvia.",                    // Index 0 - BOLD 1 baris
-            "",                                          // Index 1
-            "Druvia has breathable air and stable",     // Index 2
-            "gravity, but its atmosphere is loaded with", // Index 3
-            "carbon-like compounds called \"Xarbon\"",   // Index 4 - BOLD (hanya string "Xarbon")
-            "that are overheating the planet.",         // Index 5 - BOLD (hanya string "overheating the planet")
-            "",                                          // Index 6
-            "Your objective: Plant \"Thryl Trees\" as", // Index 7 - BOLD (hanya string "Your objective")
-            "their roots dig deep to absorb Xarbon, and", // Index 8
-            "their canopy releases cooling vapors that", // Index 9
-            "reflect excess solar radiation"             // Index 10
+            "Target Planet: Druvia.",                       // Index 0 - BOLD 1 baris
+            "",                                             // Index 1
+            "Druvia has breathable air and stable",         // Index 2
+            "gravity, but its atmosphere is loaded with",   // Index 3
+            "carbon-like compounds called \"Xarbon\"",      // Index 4 - BOLD (hanya string "Xarbon")
+            "that are overheating the planet.",             // Index 5 - BOLD (hanya string "overheating the planet")
+            "",                                             // Index 6
+            "Your objective: Plant \"Thryl Trees\" as",     // Index 7 - BOLD (hanya string "Your objective")
+            "their roots dig deep to absorb Xarbon, and",   // Index 8
+            "their canopy releases cooling vapors that",    // Index 9
+            "reflect excess solar radiation"                // Index 10
         ]
         
-        // Dictionary untuk kata/frasa yang perlu dibold per index
         let partialBoldWords: [Int: [String]] = [
             4: ["Xarbon"],
             5: ["overheating the planet"],
             7: ["Your objective"]
         ]
         
-        // Index yang seluruh barisnya bold
         let fullLineBoldIndices: Set<Int> = [0]
         
         for (index, line) in descriptionLines.enumerated() {
@@ -99,9 +92,8 @@ class IntroScene: SKScene {
             
             let label = SKLabelNode()
             
-            // Cek apakah ada kata yang perlu dibold secara parsial di index ini
             if let wordsToBold = partialBoldWords[index] {
-                // Gunakan NSMutableAttributedString untuk partial bold
+                // NSMutableAttributedString untuk partial bold
                 let attributedString = NSMutableAttributedString(
                     string: line,
                     attributes: [
@@ -110,7 +102,6 @@ class IntroScene: SKScene {
                     ]
                 )
                 
-                // Bold setiap kata/frasa yang ditentukan
                 for word in wordsToBold {
                     let range = (line as NSString).range(of: word)
                     if range.location != NSNotFound {
@@ -124,8 +115,7 @@ class IntroScene: SKScene {
                 
                 label.attributedText = attributedString
                 
-            } else {
-                // Untuk baris yang seluruhnya bold atau normal
+            } else { // Untuk baris yang seluruhnya bold atau normal
                 let shouldBeBold = fullLineBoldIndices.contains(index)
                 let fontName = shouldBeBold ? "Genos-Bold" : "Genos"
                 
@@ -162,7 +152,6 @@ class IntroScene: SKScene {
             
             let shouldBeBold = boldIndices.contains(index)
             
-            // Menggunakan fontName dan fontSize terpisah
             let fontName = shouldBeBold ? "Genos-Bold" : "Genos"
             
             label.fontName = fontName
@@ -176,7 +165,6 @@ class IntroScene: SKScene {
     }
     
     private func setupEyeSymbols() {
-        // Create eye symbols
         let eye1 = createEyeSymbol()
         eye1.position = CGPoint(x: -30, y: -185)
         missionPanel.addChild(eye1)
@@ -185,7 +173,6 @@ class IntroScene: SKScene {
         eye2.position = CGPoint(x: 30, y: -185)
         missionPanel.addChild(eye2)
         
-        // Animate eyes blinking
         animateEyes([eye1, eye2])
     }
     
