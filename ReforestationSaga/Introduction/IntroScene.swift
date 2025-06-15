@@ -187,7 +187,10 @@ class IntroScene: SKScene {
         eyeContainer.addChild(eyeOutline)
         
         // Pupil
-        let pupil = SKSpriteNode(color: SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0), size: CGSize(width: 12, height: 12))
+        let pupilSize: CGFloat = 14
+        let pupil = SKShapeNode(circleOfRadius: pupilSize / 2)
+        pupil.fillColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
+        pupil.strokeColor = SKColor.clear
         pupil.name = "pupil"
         eyeContainer.addChild(pupil)
         
