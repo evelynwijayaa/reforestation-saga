@@ -69,24 +69,72 @@ class IntroScene: SKScene {
     
     private func setupMissionDescription() {
         let descriptionLines = [
-            "Target Planet: Druvia.",
-            "",
-            "Druvia has breathable air and stable",
-            "gravity, but its atmosphere is loaded with",
-            "carbon-like compounds called \"Xarbon\"",
-            "that are overheating the planet.",
-            "",
-            "Your objective: Plant \"Thryl Trees\" as",
-            "their roots dig deep to absorb Xarbon, and",
-            "their canopy releases cooling vapors that",
-            "reflect excess solar radiation"
+            "Target Planet: Druvia.",                    // Index 0 - BOLD 1 baris
+            "",                                          // Index 1
+            "Druvia has breathable air and stable",     // Index 2
+            "gravity, but its atmosphere is loaded with", // Index 3
+            "carbon-like compounds called \"Xarbon\"",   // Index 4 - BOLD (hanya string "Xarbon")
+            "that are overheating the planet.",         // Index 5 - BOLD (hanya string "overheating the planet")
+            "",                                          // Index 6
+            "Your objective: Plant \"Thryl Trees\" as", // Index 7 - BOLD (hanya string "Your objective")
+            "their roots dig deep to absorb Xarbon, and", // Index 8
+            "their canopy releases cooling vapors that", // Index 9
+            "reflect excess solar radiation"             // Index 10
         ]
         
+        // Dictionary untuk kata/frasa yang perlu dibold per index
+        let partialBoldWords: [Int: [String]] = [
+            4: ["Xarbon"],
+            5: ["overheating the planet"],
+            7: ["Your objective"]
+        ]
+        
+        // Index yang seluruh barisnya bold
+        let fullLineBoldIndices: Set<Int> = [0]
+        
         for (index, line) in descriptionLines.enumerated() {
-            let label = SKLabelNode(text: line)
-            label.fontName = "Genos"
-            label.fontSize = 17
-            label.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
+            if line.isEmpty {
+                continue
+            }
+            
+            let label = SKLabelNode()
+            
+            // Cek apakah ada kata yang perlu dibold secara parsial di index ini
+            if let wordsToBold = partialBoldWords[index] {
+                // Gunakan NSMutableAttributedString untuk partial bold
+                let attributedString = NSMutableAttributedString(
+                    string: line,
+                    attributes: [
+                        .font: UIFont(name: "Genos", size: 17) ?? UIFont.systemFont(ofSize: 17),
+                        .foregroundColor: UIColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
+                    ]
+                )
+                
+                // Bold setiap kata/frasa yang ditentukan
+                for word in wordsToBold {
+                    let range = (line as NSString).range(of: word)
+                    if range.location != NSNotFound {
+                        attributedString.addAttribute(
+                            .font,
+                            value: UIFont(name: "Genos-Bold", size: 17) ?? UIFont.boldSystemFont(ofSize: 17),
+                            range: range
+                        )
+                    }
+                }
+                
+                label.attributedText = attributedString
+                
+            } else {
+                // Untuk baris yang seluruhnya bold atau normal
+                let shouldBeBold = fullLineBoldIndices.contains(index)
+                let fontName = shouldBeBold ? "Genos-Bold" : "Genos"
+                
+                label.fontName = fontName
+                label.fontSize = 17
+                label.fontColor = UIColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
+                label.text = line
+            }
+            
             label.position = CGPoint(x: 0, y: 195 - CGFloat(index * 20))
             missionPanel.addChild(label)
         }
@@ -103,15 +151,27 @@ class IntroScene: SKScene {
             "The fate of Earth lies in your vision."
         ]
         
+        let boldIndices: Set<Int> = [0]
+        
         for (index, line) in instructionLines.enumerated() {
-            if !line.isEmpty {
-                let label = SKLabelNode(text: line)
-                label.fontName = "Genos"
-                label.fontSize = 17
-                label.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
-                label.position = CGPoint(x: 0, y: -65 - CGFloat(index * 18))
-                missionPanel.addChild(label)
+            if line.isEmpty {
+                continue
             }
+            
+            let label = SKLabelNode()
+            
+            let shouldBeBold = boldIndices.contains(index)
+            
+            // Menggunakan fontName dan fontSize terpisah
+            let fontName = shouldBeBold ? "Genos-Bold" : "Genos"
+            
+            label.fontName = fontName
+            label.fontSize = 17
+            label.fontColor = UIColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
+            label.text = line
+            label.position = CGPoint(x: 0, y: -65 - CGFloat(index * 18))
+            
+            missionPanel.addChild(label)
         }
     }
     
