@@ -19,7 +19,7 @@ struct GameView: View {
             
             CameraPreviewView(session: detector.captureSession)
                 .edgesIgnoringSafeArea(.all)
-            Image("background-level-1")
+            Image("background")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             if let scene = scene {
@@ -58,7 +58,7 @@ struct GameView: View {
             }
             self.scene = newScene
         }
-        // 🔥 Detect change and trigger function
+        // Detect change and trigger function
         .onChange(of: detector.predictionLabel) {
             scene!.triggerAction(detector.predictionLabel)
         }
