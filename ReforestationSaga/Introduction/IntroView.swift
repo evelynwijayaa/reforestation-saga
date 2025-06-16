@@ -24,8 +24,8 @@ struct IntroView: View {
                 Image("introBorder")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 400, height: 500)
-                    .padding(.bottom, 50)
+                    .frame(width: 400, height: 450)
+                    .padding(.bottom, 0)
                 
                 if let scene = scene {
                     SpriteView(scene: scene, options: [.allowsTransparency])
@@ -102,7 +102,7 @@ struct IntroView: View {
                                 .frame(width: 200, height: 200)
                         }
                         .padding(.leading, 0)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 20)
                         .buttonStyle(PlainButtonStyle())
                         
                         // Glow animation effect
@@ -122,11 +122,17 @@ struct IntroView: View {
                 
                 //Atas
                 Image("Separator")
-                    .padding(.top, -225)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 305, height: 200)
+                    .padding(.top, -270)
                 
                 //Bawah
                 Image("Separator")
-                    .padding(.top, 65)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 305, height: 200)
+                    .padding(.top, 80)
             }
             .onAppear {
                 setupScene()
