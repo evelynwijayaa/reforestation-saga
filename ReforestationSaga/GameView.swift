@@ -9,15 +9,15 @@ import SpriteKit
 import SwiftUI
 
 struct GameView: View {
-    @StateObject private var detector = EyeBlinkDetector()
+    @StateObject private var detector = EyeBlinkDetectorVision()
     @State private var showAlert = false
     @State private var scene: GameScene?
     @State private var isMuted: Bool = false
 
     var body: some View {
         ZStack {
-            
-            CameraPreviewView(session: detector.captureSession)
+
+            CameraViewVision(eyeBlinkDetector: detector)
                 .edgesIgnoringSafeArea(.all)
             Image("background")
                 .resizable()
@@ -38,7 +38,7 @@ struct GameView: View {
                             scene?.resumeMusic()
                         }
                     } label: {
-                        Image(isMuted ? "sound-off" :"sound-on")
+                        Image(isMuted ? "sound-off" : "sound-on")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 30, height: 30)
@@ -47,10 +47,10 @@ struct GameView: View {
                 }
                 Spacer()
             }
-            
+
         }
         .onAppear {
-            detector.startCamera()
+            //            detector.startCamera()
             let newScene = GameScene(size: CGSize(width: 400, height: 800))
             newScene.scaleMode = .resizeFill
             newScene.onFailZoneHit = {
@@ -58,9 +58,9 @@ struct GameView: View {
             }
             self.scene = newScene
         }
-        // Detect change and trigger function
-        .onChange(of: detector.predictionLabel) {
-            scene!.triggerAction(detector.predictionLabel)
+        // 🔥 Detect change and trigger function
+        .onChange(of: detector.blinkCount) {
+            scene?.shootNeedle()
         }
         .alert("Mission Failed!", isPresented: $showAlert) {
             Button("Try Again", role: .cancel) {}
