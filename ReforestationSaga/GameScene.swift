@@ -133,12 +133,13 @@ class GameScene: SKScene {
         let sequence = SKAction.sequence([move, stickToCircle])
         needle.run(sequence)
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        shootNeedle()
+//        shootNeedle()
     }
+    
 }
 
-#Preview {
-    GameView()
-}
+//#Preview {
+//    GameView()
+//}

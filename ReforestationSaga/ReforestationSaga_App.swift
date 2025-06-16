@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct ReforestationSaga_App: App {
+    @StateObject private var detector = EyeBlinkDetectorVision()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(detector)
         }
     }
 }
