@@ -52,7 +52,7 @@ class IntroScene: SKScene {
         missionTitle.fontName = "Gugi"
         missionTitle.fontSize = 17
         missionTitle.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
-        missionTitle.position = CGPoint(x: 0, y: 243)
+        missionTitle.position = CGPoint(x: 0, y: 190)
         missionPanel.addChild(missionTitle)
         
         setupMissionDescription()
@@ -64,23 +64,21 @@ class IntroScene: SKScene {
     
     private func setupMissionDescription() {
         let descriptionLines = [
-            "Target Planet: Druvia.",                       // Index 0 - BOLD 1 baris
+            "Target Planet: Earth.",                        // Index 0 - BOLD 1 baris
             "",                                             // Index 1
-            "Druvia has breathable air and stable",         // Index 2
-            "gravity, but its atmosphere is loaded with",   // Index 3
-            "carbon-like compounds called \"Xarbon\"",      // Index 4 - BOLD (hanya string "Xarbon")
-            "that are overheating the planet.",             // Index 5 - BOLD (hanya string "overheating the planet")
-            "",                                             // Index 6
-            "Your objective: Plant \"Thryl Trees\" as",     // Index 7 - BOLD (hanya string "Your objective")
-            "their roots dig deep to absorb Xarbon, and",   // Index 8
-            "their canopy releases cooling vapors that",    // Index 9
-            "reflect excess solar radiation"                // Index 10
+            "Atmospheric carbon levels have",               // Index 2
+            "surged. Temperatures are rising. Life ",       // Index 3
+            "systems are destabilizing.",                   // Index 4
+            "",                                             // Index 5
+            "Your objective: Deploy carbon-",               // Index 6 - BOLD (hanya string "Your objective")
+            "capture units via orbital tree pods to",       // Index 7
+            "help reforest high-emission zones."            // Index 8
         ]
         
         let partialBoldWords: [Int: [String]] = [
-            4: ["Xarbon"],
-            5: ["overheating the planet"],
-            7: ["Your objective"]
+//            4: ["Xarbon"],
+//            5: ["overheating the planet"],
+            6: ["Your objective"]
         ]
         
         let fullLineBoldIndices: Set<Int> = [0]
@@ -125,7 +123,7 @@ class IntroScene: SKScene {
                 label.text = line
             }
             
-            label.position = CGPoint(x: 0, y: 195 - CGFloat(index * 20))
+            label.position = CGPoint(x: 0, y: 145 - CGFloat(index * 20))
             missionPanel.addChild(label)
         }
     }
@@ -134,9 +132,8 @@ class IntroScene: SKScene {
         
         let instructionLines = [
             "What you should do:",
-            "Every blink launches a Thryl Tree.",
-            "Every tree absorbs Xarbon through",
-            "their roots.",
+            "Every blink launches a tree. Every tree ",
+            "draws down carbon.",
             "",
             "The fate of Earth lies in your vision."
         ]
@@ -158,7 +155,7 @@ class IntroScene: SKScene {
             label.fontSize = 17
             label.fontColor = UIColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
             label.text = line
-            label.position = CGPoint(x: 0, y: -65 - CGFloat(index * 18))
+            label.position = CGPoint(x: 0, y: -70 - CGFloat(index * 18))
             
             missionPanel.addChild(label)
         }
@@ -166,11 +163,11 @@ class IntroScene: SKScene {
     
     private func setupEyeSymbols() {
         let eye1 = createEyeSymbol()
-        eye1.position = CGPoint(x: -30, y: -185)
+        eye1.position = CGPoint(x: -30, y: -180)
         missionPanel.addChild(eye1)
         
         let eye2 = createEyeSymbol()
-        eye2.position = CGPoint(x: 30, y: -185)
+        eye2.position = CGPoint(x: 30, y: -180)
         missionPanel.addChild(eye2)
         
         animateEyes([eye1, eye2])
