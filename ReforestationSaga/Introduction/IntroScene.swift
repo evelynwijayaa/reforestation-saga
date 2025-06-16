@@ -48,7 +48,7 @@ class IntroScene: SKScene {
     }
     
     private func setupMissionContent() {
-        let missionTitle = SKLabelNode(text: "Mission 001")
+        let missionTitle = SKLabelNode(text: "Your Mission")
         missionTitle.fontName = "Gugi"
         missionTitle.fontSize = 17
         missionTitle.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
