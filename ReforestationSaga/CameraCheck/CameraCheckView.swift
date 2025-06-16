@@ -31,7 +31,7 @@ struct CameraCheckView: View {
             }
         }
         .navigationDestination(isPresented: $navigateToNextPage) {
-            IntroView()
+            MailView()
         }
         .navigationBarBackButtonHidden(true)
     }
