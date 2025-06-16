@@ -94,13 +94,7 @@ struct GameView: View {
                         } else {
                             scene?.resumeMusic()
                         }
-                    } label: {
-                        Image(isMuted ? "sound-off" : "sound-on")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                    }
-                    .padding(.horizontal, 24)
+                    } label: {}
                 }
                 .padding(.horizontal, 20)
                 
