@@ -19,7 +19,7 @@ struct GameView: View {
 
             CameraViewVision(eyeBlinkDetector: detector)
                 .edgesIgnoringSafeArea(.all)
-            Image("background-level-1")
+            Image("background")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
             if let scene = scene {
