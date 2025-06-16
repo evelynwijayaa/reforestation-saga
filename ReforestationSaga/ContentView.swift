@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HomeView()
+        HomeView(highestLevel: .constant(5))
     }
 }
 #Preview {
