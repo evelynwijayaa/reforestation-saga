@@ -27,7 +27,7 @@ class IntroScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear
         view.allowsTransparency = true
-        mechanics.setupBackgroundMusic(in: self)
+//        mechanics.setupBackgroundMusic(in: self)
         
         setupUI()
     }
