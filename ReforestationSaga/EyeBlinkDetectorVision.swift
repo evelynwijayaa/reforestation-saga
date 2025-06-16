@@ -25,7 +25,7 @@ struct CameraViewVision: UIViewRepresentable {
         button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(
-            context.coordinator,
+            eyeBlinkDetector,
             action: #selector(EyeBlinkDetectorVision.switchCameraTapped),
             for: .touchUpInside)
 
@@ -62,6 +62,10 @@ struct CameraViewVision: UIViewRepresentable {
 
     func updateUIView(_ uiView: CameraPreviewViewVision, context: Context) {}
     
+    func dismantleUIView(_ uiView: CameraPreviewViewVision, coordinator: ()) {
+        eyeBlinkDetector.stopSession()
+    }
+    
 }
 
 class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -78,6 +82,10 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
     var frameCount = 0
 
     var blinkCountLabel: UILabel?
+    
+    func stopSession() {
+        session.stopRunning()
+    }
 
     func setupCamera(in view: CameraPreviewViewVision, usingFrontCamera: Bool) {
         session.beginConfiguration()
@@ -189,9 +197,9 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
                         < ($1.boundingBox.width * $1.boundingBox.height)
                 }) {
                     let face = largestFace
-                    let faceBox = self.createBoundingBox(
-                        for: face.boundingBox, in: previewLayer)
-                    self.overlayLayer.addSublayer(faceBox)
+//                    let faceBox = self.createBoundingBox(
+//                        for: face.boundingBox, in: previewLayer)
+//                    self.overlayLayer.addSublayer(faceBox)
 
                     if let landmarks = face.landmarks,
                         let leftEye = landmarks.leftEye,
@@ -200,7 +208,6 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
 
                         let leftEAR = self.computeEyeAspectRatio(leftEye)
                         let rightEAR = self.computeEyeAspectRatio(rightEye)
-//                            let avgEAR = (leftEAR + rightEAR) / 2.0
 
                         if leftEAR < 0.1  && rightEAR < 0.1 {
                             if !self.isEyeClosed {
@@ -213,7 +220,6 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
                                     self.blinkCountLabel?.text =
                                         "Blink: \(self.blinkCount)"
                                 }
-//                                print("Blink Count: \(self.blinkCount)")
                                 self.isEyeClosed = false
                             }
                         }
@@ -282,7 +288,7 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.strokeColor = UIColor(Color.gold).cgColor
         shapeLayer.lineWidth = 2
         shapeLayer.fillColor = UIColor.clear.cgColor
 

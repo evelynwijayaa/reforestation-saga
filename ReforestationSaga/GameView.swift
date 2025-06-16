@@ -9,7 +9,7 @@ import SpriteKit
 import SwiftUI
 
 struct GameView: View {
-    @StateObject private var detector = EyeBlinkDetectorVision()
+    @EnvironmentObject var detector: EyeBlinkDetectorVision
     @State private var showAlert = false
     @State private var scene: GameScene?
     @State private var isMuted: Bool = false
@@ -72,4 +72,5 @@ struct GameView: View {
 
 #Preview {
     GameView()
+        .environmentObject(EyeBlinkDetectorVision())
 }

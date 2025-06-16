@@ -131,7 +131,9 @@ struct IntroView: View {
             .onAppear {
                 setupScene()
             }
+            
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private func setupScene() {
