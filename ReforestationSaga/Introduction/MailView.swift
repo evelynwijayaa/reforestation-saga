@@ -11,27 +11,13 @@ struct MailView: View {
     @State private var isSoundOn = true
     @State private var navigateToGame = false
     @State private var showCurrentView = true
+    @EnvironmentObject var gameData: GameData
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
                 Image("background")
                     .ignoresSafeArea()
-                
-                HStack {
-                    ZStack {
-                        Image("box")
-                            .resizable()
-                            .frame(width: 140, height: 31)
-                        Text("Highest Level 0")
-                            .font(Font.custom("Gugi", size: 14))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
-                            .padding(.bottom, 8)
-                    }
-                    
-                }
-                .padding(.top, 60)
                 
                 // Main
                 if showCurrentView {
@@ -52,8 +38,8 @@ struct MailView: View {
                         ZStack {
                             Image("box")
                                 .resizable()
-                                .frame(width: 140, height: 31)
-                            Text("Highest Level 0")
+                                .frame(width: 140, height: 40)
+                            Text("Highest Level \(gameData.highestLevel)")
                                 .font(Font.custom("Gugi", size: 14))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
@@ -61,7 +47,7 @@ struct MailView: View {
                         }
                         
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 58)
                     
                     Button(action: {
                         isSoundOn.toggle()
@@ -123,4 +109,5 @@ struct MailView: View {
 
 #Preview {
     MailView()
+        .environmentObject(GameData())
 }

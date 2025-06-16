@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MissionFailedPopUp: View {
-    @Binding var highestLevel: Int
+    @EnvironmentObject var gameData: GameData
     @Binding var currentLevel: Int
     var isNewHighScore: Bool
     var onNextMission: () -> Void
@@ -27,7 +27,7 @@ struct MissionFailedPopUp: View {
                     .padding(.top,15)
                     .padding(.bottom,47)
                 if isNewHighScore {
-                    Text("New Highest Level: \(highestLevel)")
+                    Text("New Highest Level: \(gameData.highestLevel)")
                         .font(
                             Font.custom("Genos", size: 20.58992)
                                 .weight(.medium)
@@ -67,8 +67,8 @@ struct MissionFailedPopUp: View {
     }
 }
 
-#Preview {
-    MissionFailedPopUp(highestLevel: .constant(5), currentLevel: .constant(3), isNewHighScore: false, onNextMission: {print("retry game")})
-        .padding()
-        .background(.black.opacity(0.5))
-}
+//#Preview {
+//    MissionFailedPopUp(highestLevel: .constant(5), currentLevel: .constant(3), isNewHighScore: false, onNextMission: {print("retry game")})
+//        .padding()
+//        .background(.black.opacity(0.5))
+//}

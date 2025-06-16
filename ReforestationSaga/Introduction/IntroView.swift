@@ -14,6 +14,7 @@ struct IntroView: View {
     @State private var isMuted: Bool = false
     @State private var navToGame = false
     @State private var glowOpacity: Double = 0.7
+    @EnvironmentObject var gameData: GameData
     
     var body: some View {
         NavigationView{
@@ -38,7 +39,7 @@ struct IntroView: View {
                     VStack {
                         HStack{
                             Spacer()
-                            Text("Highest level: 0")
+                            Text("Highest level: \(gameData.highestLevel)")
                                 .font(Font.custom("Gugi", size: 14))
                                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
                                 .padding(.bottom, 9)
@@ -164,4 +165,5 @@ struct IntroView: View {
 
 #Preview {
     IntroView()
+        .environmentObject(GameData())
 }
