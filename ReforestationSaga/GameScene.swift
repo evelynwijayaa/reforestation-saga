@@ -14,6 +14,20 @@ class GameScene: SKScene {
     let needleContainer = SKNode()
     var onFailZoneHit: (() -> Void)? // Closure untuk trigger alert dari SwiftUI
     let mechanics = GameMechanics()
+    
+    //tambahan eve
+    var onTreeHit: (() -> Void)?
+    
+    private var treesShot = 0
+    private var treesTarget = 3 // default level 1
+    func configureLevel(treesNeeded: Int) {
+        treesShot = 0
+        treesTarget = treesNeeded
+        resetNeedles()
+    }
+    var remainingTrees: Int {
+            return max(treesTarget - treesShot, 0)
+        }
 
     func triggerAction(_ state: String) {
         if state == "Blink detected" {
@@ -110,6 +124,10 @@ class GameScene: SKScene {
             needle.zRotation = -self.circle.zRotation
 
             self.needleContainer.addChild(needle)
+            
+            //tambahan eve
+            self.treesShot += 1
+            self.onTreeHit?()
         }
 
         let sequence = SKAction.sequence([move, stickToCircle])
