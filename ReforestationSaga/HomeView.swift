@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var isSoundOn = true
+    @State private var scene: GameScene?
+    @State private var isMuted: Bool = false
     @State private var navigateToGame = false
     @State private var QuestView = false
     
@@ -24,7 +25,7 @@ struct HomeView: View {
                     ZStack {
                         Image("box")
                             .resizable()
-                            .frame(width: 140, height: 31)
+                            .frame(width: 140, height: 40)
                         Text("Highest Level 0")
                             .font(Font.custom("Gugi", size: 14))
                             .multilineTextAlignment(.center)
@@ -35,10 +36,15 @@ struct HomeView: View {
                 }
                 .padding(.top, 60)
                 
-                Button(action: {
-                    isSoundOn.toggle()
-                }) {
-                    Image(isSoundOn ? "sound" : "soundoff")
+                Button {
+                    isMuted.toggle()
+                    if isMuted {
+                        scene?.pauseMusic()
+                    } else {
+                        scene?.resumeMusic()
+                    }
+                } label: {
+                    Image(isMuted ? "soundoff" : "sound")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 35, height: 35)
