@@ -15,58 +15,59 @@ struct IntroView: View {
     @State private var navToGame = false
     @State private var glowOpacity: Double = 0.7
     @EnvironmentObject var gameData: GameData
-    
+    @State private var currentLevel: Int = 1
+    var gamescene: GameScene?
+
     var body: some View {
+        NavigationView {
             ZStack {
                 Image("background")
                     .edgesIgnoringSafeArea(.all)
-                
+
                 Image("introBorder")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 400, height: 450)
                     .padding(.bottom, 0)
-                
+
                 if let scene = scene {
                     SpriteView(scene: scene, options: [.allowsTransparency])
                         .frame(width: 300, height: 600)
                         .ignoresSafeArea()
                 }
-                
-                HStack{
-                    Spacer()
+
+                VStack {
                     VStack {
-                        HStack{
+                        HStack {
                             Spacer()
-                            Text("Highest level: \(gameData.highestLevel)")
-                                .font(Font.custom("Gugi", size: 14))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(
-                                    Color(red: 0.94, green: 0.84, blue: 0.65)
-                                )
-                                .padding(.bottom, 9)
-                        }
-                    }
-                    .padding(.horizontal, 20)
 
-                    HStack {
-                        Spacer()
-
-                        Button {
-                            isMuted.toggle()
-                            if isMuted {
-                                scene?.pauseMusic()
-                            } else {
-                                scene?.resumeMusic()
+                            // Kanan Atas
+                            LevelSoundView(
+                                isMuted: $isMuted,
+                                currentLevel: currentLevel,
+                                scene: gamescene
+                            )
+                            .offset(y: 37)
+                            Button {
+                                isMuted.toggle()
+                                if isMuted {
+                                    scene?.pauseMusic()
+                                } else {
+                                    scene?.resumeMusic()
+                                }
+                            } label: {
                             }
-                        } label: {
-                            Image(isMuted ? "sound-off" : "sound-on")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30, height: 30)
                         }
+                        .padding(.horizontal, 20)
+
+                        //                        Spacer()
                     }
-                    .padding(.horizontal, 25)
+                    //                    LevelSoundView(
+                    //                        isMuted: $isMuted,
+                    //                        currentLevel: currentLevel,
+                    //                        scene: gamescene)
+                    //                    .offset(y: 50)
+                    //                    .offset(x: 140)
 
                     Spacer()
 
@@ -108,24 +109,24 @@ struct IntroView: View {
                 }
                 .padding(.top, 20)
                 .padding(.horizontal, 25)
+
+                //Atas
+                Image("Separator")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 305, height: 200)
+                    .padding(.top, -270)
+
+                //Bawah
+                Image("Separator")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 305, height: 200)
+                    .padding(.top, 80)
             }
-
-            //Atas
-            Image("Separator")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 305, height: 200)
-                .padding(.top, -270)
-
-            //Bawah
-            Image("Separator")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 305, height: 200)
-                .padding(.top, 80)
-        }
-        .onAppear {
-            setupScene()
+            .onAppear {
+                setupScene()
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
