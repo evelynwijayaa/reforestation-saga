@@ -14,46 +14,31 @@ struct IntroView: View {
     @State private var isMuted: Bool = false
     @State private var navToGame = false
     @State private var glowOpacity: Double = 0.7
-
+    @EnvironmentObject var gameData: GameData
+    
     var body: some View {
-        ZStack {
-            Image("background")
-                .edgesIgnoringSafeArea(.all)
-
-            Image("introBorder")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 400, height: 450)
-                .padding(.bottom, 0)
-
-            if let scene = scene {
-                SpriteView(scene: scene, options: [.allowsTransparency])
-                    .frame(width: 300, height: 600)
-                    .ignoresSafeArea()
-            }
-
-            HStack {
-                Spacer()
-                VStack {
-                    HStack {
-                        Spacer()
-                        Text("Highest level: 0")
-                            .font(Font.custom("Gugi", size: 14))
-                            .foregroundColor(
-                                Color(red: 0.94, green: 0.84, blue: 0.65)
-                            )
-                            .padding(.bottom, 9)
-                            .padding(.horizontal, 25)
-                    }
-                    .padding(.top, 30)
-
-                    HStack {
-                        Spacer()
-                        ZStack {
-                            Image("box")
-                                .resizable()
-                                .frame(width: 120, height: 40)
-                            Text("LEVEL 1")
+            ZStack {
+                Image("background")
+                    .edgesIgnoringSafeArea(.all)
+                
+                Image("introBorder")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 400, height: 450)
+                    .padding(.bottom, 0)
+                
+                if let scene = scene {
+                    SpriteView(scene: scene, options: [.allowsTransparency])
+                        .frame(width: 300, height: 600)
+                        .ignoresSafeArea()
+                }
+                
+                HStack{
+                    Spacer()
+                    VStack {
+                        HStack{
+                            Spacer()
+                            Text("Highest level: \(gameData.highestLevel)")
                                 .font(Font.custom("Gugi", size: 14))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(
@@ -167,4 +152,5 @@ struct IntroView: View {
 
 #Preview {
     IntroView()
+        .environmentObject(GameData())
 }

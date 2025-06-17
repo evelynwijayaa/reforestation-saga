@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var isMuted: Bool = false
     @State private var navigateToGame = false
     @State private var QuestView = false
+    @EnvironmentObject var gameData: GameData
 
     var body: some View {
         NavigationStack {
@@ -25,7 +26,7 @@ struct HomeView: View {
                         Image("box")
                             .resizable()
                             .frame(width: 140, height: 40)
-                        Text("Highest Level 0")
+                        Text("Highest Level: \(gameData.highestLevel)")
                             .font(Font.custom("Gugi", size: 14))
                             .multilineTextAlignment(.center)
                             .foregroundColor(
@@ -35,7 +36,7 @@ struct HomeView: View {
                     }
 
                 }
-                .padding(.top, 60)
+                .padding(.top, 58)
                 
                 Button {
                     isMuted.toggle()
@@ -121,7 +122,7 @@ struct HomeView: View {
                                     .padding(.top, 60)
                                     .padding(.bottom, 30)
                                     .frame(width: 360, height: 300)
-                                //                                    .background(Color.red.opacity(0.1))
+//                                                                    .background(Color.red.opacity(0.1))
 
                                 (Text("Welcome aboard, Cadet!\n\n ")
                                     .font(Font.custom("Gugi", size: 14))
@@ -154,6 +155,7 @@ struct HomeView: View {
                                         .padding(.leading, 250)
                                 }
                             }
+                            .padding(.top, -32)
                         }
                     }
                     .frame(width: geometry.size.width)
@@ -169,4 +171,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(GameData())
 }

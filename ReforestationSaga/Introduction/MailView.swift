@@ -11,77 +11,19 @@ struct MailView: View {
     @State private var isSoundOn = true
     @State private var navigateToGame = false
     @State private var showCurrentView = true
-
+    @EnvironmentObject var gameData: GameData
+    
     var body: some View {
-        ZStack(alignment: .top) {
-            Image("background")
-                .ignoresSafeArea()
-
-            HStack {
-                ZStack {
-                    Image("box")
-                        .resizable()
-                        .frame(width: 140, height: 31)
-                    Text("Highest Level 0")
-                        .font(Font.custom("Gugi", size: 14))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(
-                            Color(red: 0.94, green: 0.84, blue: 0.65)
-                        )
-                        .padding(.bottom, 8)
-                }
-
-            }
-            .padding(.top, 60)
-
-            // Main
-            if showCurrentView {
-                Button(action: {
-                    isSoundOn.toggle()
-                }) {
-                    Image(isSoundOn ? "sound" : "soundoff")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 35, height: 35)
-                }
-                .padding(.leading, 300)
-                .padding(.top, 55)
-                .zIndex(2)
-                .buttonStyle(PlainButtonStyle())
-
-                HStack {
-                    ZStack {
-                        Image("box")
-                            .resizable()
-                            .frame(width: 140, height: 31)
-                        Text("Highest Level 0")
-                            .font(Font.custom("Gugi", size: 14))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(
-                                Color(red: 0.94, green: 0.84, blue: 0.65)
-                            )
-                            .padding(.bottom, 8)
-                    }
-
-                }
-                .padding(.top, 60)
-
-                Button(action: {
-                    isSoundOn.toggle()
-                }) {
-                    Image(isSoundOn ? "sound" : "soundoff")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 35, height: 35)
-                }
-                .padding(.leading, 300)
-                .padding(.top, 55)
-                .zIndex(2)
-                .buttonStyle(PlainButtonStyle())
-
-                GeometryReader { geometry in
-                    VStack {
-                        Image("email")
+            ZStack(alignment: .top) {
+                Image("background")
+                    .ignoresSafeArea()
+                
+                // Main
+                if showCurrentView {
+                    Button(action: {
+                        isSoundOn.toggle()
+                    }) {
+                        Image(isSoundOn ? "sound" : "soundoff")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 400, height: 274)
@@ -93,6 +35,30 @@ struct MailView: View {
 
                     VStack {
                         Image("message")
+                    .padding(.leading, 300)
+                    .padding(.top, 55)
+                    .zIndex(2)
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    HStack {
+                        ZStack {
+                            Image("box")
+                                .resizable()
+                                .frame(width: 140, height: 40)
+                            Text("Highest Level \(gameData.highestLevel)")
+                                .font(Font.custom("Gugi", size: 14))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
+                                .padding(.bottom, 8)
+                        }
+                        
+                    }
+                    .padding(.top, 58)
+                    
+                    Button(action: {
+                        isSoundOn.toggle()
+                    }) {
+                        Image(isSoundOn ? "sound" : "soundoff")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 240, height: 274)
@@ -129,4 +95,5 @@ struct MailView: View {
 
 #Preview {
     MailView()
+        .environmentObject(GameData())
 }
