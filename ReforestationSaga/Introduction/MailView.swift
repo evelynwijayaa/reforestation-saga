@@ -14,7 +14,6 @@ struct MailView: View {
     @EnvironmentObject var gameData: GameData
     
     var body: some View {
-        NavigationView {
             ZStack(alignment: .top) {
                 Image("background")
                     .ignoresSafeArea()
@@ -27,8 +26,15 @@ struct MailView: View {
                         Image(isSoundOn ? "sound" : "soundoff")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 35, height: 35)
+                            .frame(width: 400, height: 274)
                     }
+                    .frame(width: geometry.size.width)
+                    .position(
+                        x: geometry.size.width / 2,
+                        y: geometry.size.height / 2)
+
+                    VStack {
+                        Image("message")
                     .padding(.leading, 300)
                     .padding(.top, 55)
                     .zIndex(2)
@@ -55,56 +61,36 @@ struct MailView: View {
                         Image(isSoundOn ? "sound" : "soundoff")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 35, height: 35)
+                            .frame(width: 240, height: 274)
+                            .onTapGesture {
+                                performFadeTransition()
+                            }
                     }
-                    .padding(.leading, 300)
-                    .padding(.top, 55)
-                    .zIndex(2)
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    GeometryReader { geometry in
-                        VStack {
-                            Image("email")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 400, height: 274)
-                        }
-                        .frame(width: geometry.size.width)
-                        .position(x: geometry.size.width / 2,
-                                  y: geometry.size.height / 2)
-                        
-                        VStack {
-                            Image("message")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 240, height: 274)
-                                .onTapGesture {
-                                    performFadeTransition()
-                                }
-                        }
-                        .frame(width: geometry.size.width)
-                        .position(x: geometry.size.width / 2,
-                                  y: geometry.size.height / 1.88)
-                    }
+                    .frame(width: geometry.size.width)
+                    .position(
+                        x: geometry.size.width / 2,
+                        y: geometry.size.height / 1.88)
                 }
-                
-                if navigateToGame {
-                    IntroView()
-                }
+            }
+
+            if navigateToGame {
+                IntroView()
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+
+    }
+    private func performFadeTransition() {
+        withAnimation(.easeOut(duration: 0.2)) {
+            showCurrentView = false
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation(.easeIn(duration: 0.2)) {
+                navigateToGame = true
             }
         }
     }
-    private func performFadeTransition() {
-       withAnimation(.easeOut(duration: 0.2)) {
-           showCurrentView = false
-       }
-       
-       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-           withAnimation(.easeIn(duration: 0.2)) {
-               navigateToGame = true
-           }
-       }
-   }
 }
 
 #Preview {

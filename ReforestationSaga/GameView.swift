@@ -163,6 +163,7 @@ struct GameView: View {
                 .zIndex(2)
             }
         }
+        .navigationBarBackButtonHidden(true)
         
         //buat tes preview
 #if DEBUG
