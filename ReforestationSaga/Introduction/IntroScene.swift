@@ -13,22 +13,10 @@ class IntroScene: SKScene {
     private var missionPanel: SKSpriteNode!
     private var startButton: SKSpriteNode!
     var onStartMission: (() -> Void)?
-    let mechanics = GameMechanics()
-    
-    
-    func pauseMusic() {
-        mechanics.pauseMusic()
-    }
-    
-    func resumeMusic() {
-        mechanics.resumeMusic()
-    }
     
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear
         view.allowsTransparency = true
-//        mechanics.setupBackgroundMusic(in: self)
-        
         setupUI()
     }
     

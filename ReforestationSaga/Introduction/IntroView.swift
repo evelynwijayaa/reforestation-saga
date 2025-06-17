@@ -51,9 +51,9 @@ struct IntroView: View {
                             Button {
                                 isMuted.toggle()
                                 if isMuted {
-                                    scene?.pauseMusic()
+                                    GameMusicManager.shared.pauseMusic()
                                 } else {
-                                    scene?.resumeMusic()
+                                    GameMusicManager.shared.resumeMusic()
                                 }
                             } label: {
                             }

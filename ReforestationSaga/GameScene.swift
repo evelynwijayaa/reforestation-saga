@@ -13,7 +13,6 @@ class GameScene: SKScene {
     let circle = SKSpriteNode(imageNamed: "bumi")
     let needleContainer = SKNode()
     var onFailZoneHit: (() -> Void)? // Closure untuk trigger alert dari SwiftUI
-    let mechanics = GameMechanics()
     
     //tambahan eve
     var onTreeHit: (() -> Void)?
@@ -41,19 +40,10 @@ class GameScene: SKScene {
             shootNeedle()
         }
     }
-    
-    func pauseMusic() {
-        mechanics.pauseMusic()
-    }
-    
-    func resumeMusic() {
-        mechanics.resumeMusic()
-    }
 
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear
         view.allowsTransparency = true
-        mechanics.setupBackgroundMusic(in: self)
 
         circle.size = CGSize(width: 160, height: 160)
         circle.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -73,6 +63,8 @@ class GameScene: SKScene {
 //        let rotate = SKAction.rotate(byAngle: .pi, duration: 2)
 //        let forever = SKAction.repeatForever(rotate)
 //        circle.run(forever)
+        
+//        playMusic()
     }
     
     func resetNeedles() {
