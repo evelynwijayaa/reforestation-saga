@@ -124,10 +124,9 @@ struct GameView: View {
                 .zIndex(2)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .animation(.easeInOut(duration: 0.2), value: showLevelClearPopup)
         .animation(.easeInOut(duration: 0.2), value: showMissionCompletePopup)
-
-        
         .onAppear {
             //            detector.startCamera()
             let newScene = GameScene(size: CGSize(width: 400, height: 800))
