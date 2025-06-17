@@ -94,31 +94,20 @@ struct HomeView: View {
                                     .shadow(
                                         color: .white.opacity(0.4), radius: 10)
 
-                                Button(action: {
-                                    QuestView = true
-                                }) {
-                                    Text("Tap to Play")
-                                        .font(
-                                            Font.custom("Electrolize", size: 14)
-                                        )
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(
-                                            Color(
-                                                red: 0.94, green: 0.84,
-                                                blue: 0.65)
-                                        )
-                                        .padding(.top, 20)
-                                }
-                                .padding(.bottom, 70)
+                                Text("Tap to Play")
+                                    .font(Font.custom("Electrolize", size: 14))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
+                                    .padding(.top, 20)
+                                    .padding(.bottom, 70)
                             }
                             .padding(.top, 23)
-                            //                            .background(Color.red.opacity(0.1))
+//                                                        .background(Color.red.opacity(0.1))
 
                         } else {
                             ZStack {
                                 Image("questbox")
                                     .resizable()
-                                    //                                    .scaledToFit()
                                     .padding(.top, 60)
                                     .padding(.bottom, 30)
                                     .frame(width: 360, height: 300)
@@ -162,8 +151,17 @@ struct HomeView: View {
                     .position(
                         x: geometry.size.width / 2,
                         y: geometry.size.height / 2)
+                    .contentShape(Rectangle()) // Buat seluruh area bisa ditap
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                    QuestView = true
+                                }
+                        }
                 }
             }
+        }
+        .onAppear() {
+            GameMusicManager.shared.playMusic(filename: "IntroSpace")
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

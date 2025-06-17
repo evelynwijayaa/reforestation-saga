@@ -19,14 +19,19 @@ struct CameraCheckView: View {
             Image("camera-bg")
                 .resizable()
                 .ignoresSafeArea()
+            if showAlert {
+                AccessGrantedPopUp()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.scale)
+                    .zIndex(1)
+            }
         }
         .onChange(of: detector.blinkCount) {
             if detector.blinkCount > 0 {
                 showAlert = true
+                GameMusicManager.shared.playSoundEffect(filename: "access-granted")
             }
-        }
-        .alert("Access Granted", isPresented: $showAlert) {
-            Button("OK", role: .cancel) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 navigateToNextPage = true
             }
         }
