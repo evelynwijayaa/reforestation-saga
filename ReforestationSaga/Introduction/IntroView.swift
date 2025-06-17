@@ -22,13 +22,14 @@ struct IntroView: View {
         NavigationView {
             ZStack {
                 Image("background")
+                    .resizable()
                     .edgesIgnoringSafeArea(.all)
 
                 Image("introBorder")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 400, height: 450)
-                    .padding(.bottom, 0)
+                    .padding(.bottom, 60)
 
                 if let scene = scene {
                     SpriteView(scene: scene, options: [.allowsTransparency])
@@ -47,27 +48,9 @@ struct IntroView: View {
                                 currentLevel: currentLevel,
                                 scene: gamescene
                             )
-                            .offset(y: 37)
-                            Button {
-                                isMuted.toggle()
-                                if isMuted {
-                                    scene?.pauseMusic()
-                                } else {
-                                    scene?.resumeMusic()
-                                }
-                            } label: {
-                            }
                         }
-                        .padding(.horizontal, 20)
-
-                        //                        Spacer()
                     }
-                    //                    LevelSoundView(
-                    //                        isMuted: $isMuted,
-                    //                        currentLevel: currentLevel,
-                    //                        scene: gamescene)
-                    //                    .offset(y: 50)
-                    //                    .offset(x: 140)
+                    .padding(.top, -5)
 
                     Spacer()
 
@@ -91,8 +74,6 @@ struct IntroView: View {
                             .scaledToFit()
                             .frame(width: 200, height: 200)
                     }
-                    .padding(.leading, 0)
-                    .padding(.bottom, 20)
                     .buttonStyle(PlainButtonStyle())
 
                     // Glow animation effect
@@ -107,7 +88,6 @@ struct IntroView: View {
                         startGlowAnimation()
                     }
                 }
-                .padding(.top, 20)
                 .padding(.horizontal, 25)
 
                 //Atas
@@ -115,14 +95,14 @@ struct IntroView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 305, height: 200)
-                    .padding(.top, -270)
+                    .padding(.top, -300)
 
                 //Bawah
                 Image("Separator")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 305, height: 200)
-                    .padding(.top, 80)
+                    .padding(.top, 25)
             }
             .onAppear {
                 setupScene()
@@ -132,7 +112,7 @@ struct IntroView: View {
     }
 
     private func setupScene() {
-        let newScene = IntroScene(size: CGSize(width: 400, height: 800))
+        let newScene = IntroScene()
         newScene.scaleMode = .resizeFill
         newScene.onStartMission = {
             navToGame = true

@@ -17,24 +17,11 @@ struct MailView: View {
         NavigationView {
             ZStack(alignment: .top) {
                 Image("background")
+                    .resizable()
                     .ignoresSafeArea()
-                
                 
                 // Main
                 if showCurrentView {
-                    Button(action: {
-                        isSoundOn.toggle()
-                    }) {
-                        Image(isSoundOn ? "sound" : "soundoff")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 35, height: 35)
-                    }
-                    .padding(.leading, 300)
-                    .padding(.top, 55)
-                    .zIndex(2)
-                    .buttonStyle(PlainButtonStyle())
-                    
                     HStack {
                         ZStack {
                             Image("box")
@@ -48,7 +35,7 @@ struct MailView: View {
                         }
                         
                     }
-                    .padding(.top, 58)
+                    .padding(.top, 10)
                     
                     Button(action: {
                         isSoundOn.toggle()
@@ -59,7 +46,7 @@ struct MailView: View {
                             .frame(width: 35, height: 35)
                     }
                     .padding(.leading, 300)
-                    .padding(.top, 55)
+                    .padding(.top, 10)
                     .zIndex(2)
                     .buttonStyle(PlainButtonStyle())
                     
