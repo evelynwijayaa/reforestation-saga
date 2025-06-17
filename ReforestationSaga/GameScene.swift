@@ -20,10 +20,17 @@ class GameScene: SKScene {
     
     private var treesShot = 0
     private var treesTarget = 3 // default level 1
-    func configureLevel(treesNeeded: Int) {
+    func configureLevel(treesNeeded: Int, rotationDuration: Double, rotateLeft: Bool) {
         treesShot = 0
         treesTarget = treesNeeded
         resetNeedles()
+        
+        circle.removeAllActions()
+
+        let angle: CGFloat = rotateLeft ? -.pi : .pi
+        let rotate = SKAction.rotate(byAngle: angle, duration: rotationDuration)
+        let forever = SKAction.repeatForever(rotate)
+        circle.run(forever)
     }
     var remainingTrees: Int {
             return max(treesTarget - treesShot, 0)
@@ -63,9 +70,9 @@ class GameScene: SKScene {
         circle.addChild(failZone)
 
         // Animasi rotasi lingkaran
-        let rotate = SKAction.rotate(byAngle: .pi, duration: 2)
-        let forever = SKAction.repeatForever(rotate)
-        circle.run(forever)
+//        let rotate = SKAction.rotate(byAngle: .pi, duration: 2)
+//        let forever = SKAction.repeatForever(rotate)
+//        circle.run(forever)
     }
     
     func resetNeedles() {
@@ -73,6 +80,8 @@ class GameScene: SKScene {
     }
 
     func shootNeedle() {
+        guard remainingTrees > 0 else { return }
+        
         let needle = SKSpriteNode(imageNamed: "pohon")
         let needleLength: CGFloat = 40
 

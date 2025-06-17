@@ -7,11 +7,20 @@
 
 import SwiftUI
 
+class GameData: ObservableObject {
+    @Published var highestLevel: Int = UserDefaults.standard.savedHighestLevel
+}
+
 struct ContentView: View {
+    @StateObject private var gameData = GameData()
+    
     var body: some View {
         HomeView()
+            .environmentObject(gameData)
     }
 }
+
 #Preview {
     ContentView()
+        .environmentObject(GameData())
 }

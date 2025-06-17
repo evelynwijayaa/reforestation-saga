@@ -9,13 +9,13 @@ import SwiftUI
 
 struct LevelSoundView: View {
     @Binding var isMuted: Bool
+    @EnvironmentObject var gameData: GameData
     var currentLevel: Int
-    var highestLevel: Int
     var scene: GameScene?
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
-            Text("Highest Level: \(highestLevel)")
+            Text("Highest Level: \(gameData.highestLevel)")
                 .font(Font.custom("Gugi", size: 11))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
@@ -65,9 +65,9 @@ struct LevelSoundPreview: View {
     var body: some View {
         LevelSoundView(isMuted: $isMuted,
                        currentLevel: 1,
-                       highestLevel: 3,
                        scene: nil)
             .padding()
             .background(Color.black) // opsional biar kontras
+            .environmentObject(GameData())
     }
 }
