@@ -45,7 +45,7 @@ struct GameView: View {
     func setupScene() {
         let newTrees = treesForLevel(currentLevel)
         self.treesNeeded = newTrees
-        let newScene = GameScene(size: CGSize(width: 400, height: 800))
+        let newScene = GameScene(size: UIScreen.main.bounds.size)
         newScene.scaleMode = .resizeFill
         newScene.onFailZoneHit = {
             showMissionFailedPopup = true
@@ -111,10 +111,10 @@ struct GameView: View {
                 .edgesIgnoringSafeArea(.all)
             SpriteView(
                 scene: scene
-                    ?? GameScene(size: CGSize(width: 400, height: 800)),
+                    ?? GameScene(size: UIScreen.main.bounds.size),
                 options: [.allowsTransparency]
             )
-            .frame(width: 300, height: 600)
+//            .frame(width: 300, height: 600)
             .id(sceneID)  // ini kuncinya!
             .ignoresSafeArea()
             VStack {
@@ -188,7 +188,7 @@ struct GameView: View {
 
         .onAppear {
             guard !hasSetupScene else { return }
-            let newScene = GameScene(size: CGSize(width: 400, height: 800))
+            let newScene = GameScene(size: UIScreen.main.bounds.size)
             newScene.scaleMode = .resizeFill
             newScene.onFailZoneHit = {
                 showMissionFailedPopup = true
@@ -255,7 +255,7 @@ extension UserDefaults {
 extension GameView {
     static func initForPreview() -> GameView {
         var view = GameView()
-        let scene = GameScene(size: CGSize(width: 400, height: 800))
+        let scene = GameScene(size: UIScreen.main.bounds.size)
         scene.configureLevel(
             treesNeeded: 3, rotationDuration: 2.0, rotateLeft: false)
 
