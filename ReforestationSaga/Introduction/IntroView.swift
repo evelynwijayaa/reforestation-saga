@@ -19,106 +19,105 @@ struct IntroView: View {
     var gamescene: GameScene?
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Image("background")
-                    .resizable()
-                    .edgesIgnoringSafeArea(.all)
+        ZStack {
+            Image("background")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
 
-                Image("introBorder")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 400, height: 450)
-                    .padding(.bottom, 60)
+            Image("introBorder")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 400, height: 450)
+                .padding(.bottom, 60)
 
-                if let scene = scene {
-                    SpriteView(scene: scene, options: [.allowsTransparency])
-                        .frame(width: 300, height: 600)
-                        .ignoresSafeArea()
-                }
+            if let scene = scene {
+                SpriteView(scene: scene, options: [.allowsTransparency])
+                    .frame(width: 300, height: 600)
+                    .ignoresSafeArea()
+            }
 
+            VStack {
                 VStack {
-                    VStack {
-                        HStack {
-                            Spacer()
+                    HStack {
+                        Spacer()
 
-                            // Kanan Atas
-                            LevelSoundView(
-                                isMuted: $isMuted,
-                                currentLevel: currentLevel,
-                                scene: gamescene
-                            )
-                            .offset(y: 37)
-                            Button {
-                                isMuted.toggle()
-                                if isMuted {
-                                    GameMusicManager.shared.pauseMusic()
-                                } else {
-                                    GameMusicManager.shared.resumeMusic()
-                                }
-                            } label: {
+                        // Kanan Atas
+                        LevelSoundView(
+                            isMuted: $isMuted,
+                            currentLevel: currentLevel,
+                            scene: gamescene
+                        )
+                        .offset(y: 4)
+                        Button {
+                            isMuted.toggle()
+                            if isMuted {
+                                GameMusicManager.shared.pauseMusic()
+                            } else {
+                                GameMusicManager.shared.resumeMusic()
                             }
+                        } label: {
                         }
                     }
-                    .padding(.top, -5)
-
-                    Spacer()
-
-                    NavigationLink(
-                        destination: GameView().navigationBarHidden(true),
-                        isActive: $navToGame
-                    ) {
-                    }
-                    .hidden()
-
-                    Button(action: {
-                        // Haptic feedback
-                        let impactFeedback = UIImpactFeedbackGenerator(
-                            style: .medium)
-                        impactFeedback.impactOccurred()
-
-                        navToGame = true
-                    }) {
-                        Image("startMission")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 200)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-
-                    // Glow animation effect
-                    .shadow(
-                        color: Color(red: 0.94, green: 0.84, blue: 0.65)
-                            .opacity(glowOpacity),
-                        radius: 20,
-                        x: 0,
-                        y: 0
-                    )
-                    .onAppear {
-                        startGlowAnimation()
-                    }
                 }
-                .padding(.horizontal, 25)
+                .padding(.top, -5)
 
-                //Atas
-                Image("Separator")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 305, height: 200)
-                    .padding(.top, -300)
+                Spacer()
 
-                //Bawah
-                Image("Separator")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 305, height: 200)
-                    .padding(.top, 25)
+                NavigationLink(
+                    destination: GameView().navigationBarHidden(true),
+                    isActive: $navToGame
+                ) {
+                }
+                .hidden()
+
+                Button(action: {
+                    // Haptic feedback
+                    let impactFeedback = UIImpactFeedbackGenerator(
+                        style: .medium)
+                    impactFeedback.impactOccurred()
+
+                    navToGame = true
+                }) {
+                    Image("startMission")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                }
+                .buttonStyle(PlainButtonStyle())
+
+                // Glow animation effect
+                .shadow(
+                    color: Color(red: 0.94, green: 0.84, blue: 0.65)
+                        .opacity(glowOpacity),
+                    radius: 20,
+                    x: 0,
+                    y: 0
+                )
+                .onAppear {
+                    startGlowAnimation()
+                }
             }
-            .onAppear {
-                setupScene()
-            }
+            .padding(.horizontal, 25)
+
+            //Atas
+            Image("Separator")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 305, height: 200)
+                .padding(.top, -300)
+
+            //Bawah
+            Image("Separator")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 305, height: 200)
+                .padding(.top, 25)
+        }
+        .onAppear {
+            setupScene()
         }
         .navigationBarBackButtonHidden(true)
+
     }
 
     private func setupScene() {

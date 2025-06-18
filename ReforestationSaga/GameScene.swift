@@ -96,6 +96,7 @@ class GameScene: SKScene {
     }
 
     func shootNeedle() {
+        GameMusicManager.shared.playSoundEffect(filename: "TreeSFX")
         guard remainingTrees > 0 else { return }
 
         let needle = SKSpriteNode(imageNamed: "pohon")
