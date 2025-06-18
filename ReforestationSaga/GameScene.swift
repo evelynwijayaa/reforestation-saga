@@ -17,18 +17,24 @@ class GameScene: SKScene {
     //tambahan eve
     var onTreeHit: (() -> Void)?
 
+    // Tambahan untuk visual tree indicator
+    private var treeIndicator: SKSpriteNode?
+
     private var treesShot = 0
     private var treesTarget = 3  // default level 1
-    private var isGameActive = true
+    
     func configureLevel(
         treesNeeded: Int,
         rotationDuration: Double,
         rotateLeft: Bool
     ) {
-        isGameActive = true
         treesShot = 0
         treesTarget = treesNeeded
         resetNeedles()
+        setupTreeIndicator() // Setup indicator saat level dimulai
+        
+        // Show indicator karena ada trees remaining
+        treeIndicator?.isHidden = false
 
         circle.removeAllActions()
 
@@ -37,6 +43,7 @@ class GameScene: SKScene {
         let forever = SKAction.repeatForever(rotate)
         circle.run(forever)
     }
+    
     var remainingTrees: Int {
         return max(treesTarget - treesShot, 0)
     }
@@ -59,6 +66,36 @@ class GameScene: SKScene {
         circle.addChild(needleContainer)
 
         setForbiddenArea()
+        setupTreeIndicator()
+    }
+
+    // Fungsi baru untuk setup tree indicator
+    private func setupTreeIndicator() {
+        // Remove existing indicator if any
+        treeIndicator?.removeFromParent()
+        
+        // Create new tree indicator
+        treeIndicator = SKSpriteNode(imageNamed: "pohonnew")
+        guard let indicator = treeIndicator else { return }
+        
+        indicator.size = CGSize(width: 30, height: 70)
+        
+        // Position di atas lingkaran (sama dengan startY di shootNeedle)
+        let startY = circle.position.y + 300
+        indicator.position = CGPoint(x: circle.position.x, y: startY)
+        indicator.zRotation = 0
+        indicator.alpha = 0.7 // Buat sedikit transparan untuk menunjukkan ini hanya indicator
+        indicator.name = "treeIndicator"
+        
+        addChild(indicator)
+        
+        // Tambahkan sedikit animasi floating untuk membuat indicator lebih menarik
+        let floatUp = SKAction.moveBy(x: 0, y: 10, duration: 1.0)
+        let floatDown = SKAction.moveBy(x: 0, y: -10, duration: 1.0)
+        let floatSequence = SKAction.sequence([floatUp, floatDown])
+        let floatForever = SKAction.repeatForever(floatSequence)
+        
+        indicator.run(floatForever)
     }
 
     private func arcPath(
@@ -126,14 +163,15 @@ class GameScene: SKScene {
         guard remainingTrees > 0 else { return }
         guard isFail == false else { return }
         GameMusicManager.shared.playSoundEffect(filename: "TreeSFX")
-        let needle = SKSpriteNode(imageNamed: "pohon")
+        let needle = SKSpriteNode(imageNamed: "pohonnew")
+        treeIndicator?.isHidden = true
         let needleLength: CGFloat = 70
 
         needle.size = CGSize(width: 30, height: needleLength)
 
         //                let needle = SKSpriteNode(color: .white, size: CGSize(width: 4, height: needleLength))
 
-        // Posisi awal jarum (di atas lingkaran)
+        // Posisi awal jarum (di atas lingkaran) - sama dengan indicator
         let startY = circle.position.y + 300
         needle.position = CGPoint(x: circle.position.x, y: startY)
         needle.zRotation = 0
@@ -146,7 +184,7 @@ class GameScene: SKScene {
             y: circle.position.y + circleRadius + needleLength / 2
         )
 
-        let move = SKAction.move(to: targetPoint, duration: 0.2)
+        let move = SKAction.move(to: targetPoint, duration: 0.18)
 
         let stickToCircle = SKAction.run {
             needle.removeAllActions()
@@ -174,7 +212,6 @@ class GameScene: SKScene {
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     self.isFail = true
                     self.onFailZoneHit?()
-                    self.isGameActive = false
                     return
                 }
             }
@@ -212,7 +249,36 @@ class GameScene: SKScene {
             self.onTreeHit?()
 
             if self.treesShot >= self.treesTarget {
-                self.isGameActive = false  // Matikan input, tunggu level complete handler
+                // Jangan tampilkan indicator lagi karena sudah selesai
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() ) {
+                    guard let indicator = self.treeIndicator else { return }
+                    
+                    // Set posisi awal lebih tinggi
+                    let normalY = self.circle.position.y + 300
+                    let startY = normalY + 30  // Mulai dari 100 point lebih tinggi
+                    
+                    indicator.position = CGPoint(x: self.circle.position.x, y: startY)
+                    indicator.alpha = 0  // Mulai transparan
+                    indicator.isHidden = false
+                    
+                    // Animasi turun ke posisi normal sambil fade in
+                    let moveDown = SKAction.moveTo(y: normalY, duration: 0.1)
+                    let fadeIn = SKAction.fadeAlpha(to: 0.7, duration: 0.1)  // Fade ke alpha normal (0.7)
+                    let appearGroup = SKAction.group([moveDown, fadeIn])
+                    
+                    // Setelah muncul, lanjutkan dengan animasi floating
+                    let setupFloating = SKAction.run {
+                        let floatUp = SKAction.moveBy(x: 0, y: 10, duration: 1.0)
+                        let floatDown = SKAction.moveBy(x: 0, y: -10, duration: 1.0)
+                        let floatSequence = SKAction.sequence([floatUp, floatDown])
+                        let floatForever = SKAction.repeatForever(floatSequence)
+                        indicator.run(floatForever, withKey: "floating")
+                    }
+                    
+                    let sequence = SKAction.sequence([appearGroup, setupFloating])
+                    indicator.run(sequence)
+                }
             }
         }
 
