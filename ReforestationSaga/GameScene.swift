@@ -14,6 +14,7 @@ class GameScene: SKScene {
     let needleContainer = SKNode()
     var onFailZoneHit: (() -> Void)?  // Closure untuk trigger alert dari SwiftUI
     var onTreeZoneHit: (() -> Void)?
+    var isFail: Bool = false
 
     //tambahan eve
     var onTreeHit: (() -> Void)?
@@ -23,7 +24,7 @@ class GameScene: SKScene {
 
     private var treesShot = 0
     private var treesTarget = 3  // default level 1
-    
+
     func configureLevel(
         treesNeeded: Int,
         rotationDuration: Double,
@@ -32,8 +33,8 @@ class GameScene: SKScene {
         treesShot = 0
         treesTarget = treesNeeded
         resetNeedles()
-        setupTreeIndicator() // Setup indicator saat level dimulai
-        
+        setupTreeIndicator()  // Setup indicator saat level dimulai
+
         // Show indicator karena ada trees remaining
         treeIndicator?.isHidden = false
 
@@ -44,7 +45,7 @@ class GameScene: SKScene {
         let forever = SKAction.repeatForever(rotate)
         circle.run(forever)
     }
-    
+
     var remainingTrees: Int {
         return max(treesTarget - treesShot, 0)
     }
@@ -74,28 +75,28 @@ class GameScene: SKScene {
     private func setupTreeIndicator() {
         // Remove existing indicator if any
         treeIndicator?.removeFromParent()
-        
+
         // Create new tree indicator
         treeIndicator = SKSpriteNode(imageNamed: "pohonnew")
         guard let indicator = treeIndicator else { return }
-        
+
         indicator.size = CGSize(width: 30, height: 70)
-        
+
         // Position di atas lingkaran (sama dengan startY di shootNeedle)
         let startY = circle.position.y + 300
         indicator.position = CGPoint(x: circle.position.x, y: startY)
         indicator.zRotation = 0
-        indicator.alpha = 0.7 // Buat sedikit transparan untuk menunjukkan ini hanya indicator
+        indicator.alpha = 0.7  // Buat sedikit transparan untuk menunjukkan ini hanya indicator
         indicator.name = "treeIndicator"
-        
+
         addChild(indicator)
-        
+
         // Tambahkan sedikit animasi floating untuk membuat indicator lebih menarik
         let floatUp = SKAction.moveBy(x: 0, y: 10, duration: 1.0)
         let floatDown = SKAction.moveBy(x: 0, y: -10, duration: 1.0)
         let floatSequence = SKAction.sequence([floatUp, floatDown])
         let floatForever = SKAction.repeatForever(floatSequence)
-        
+
         indicator.run(floatForever)
     }
 
@@ -223,12 +224,12 @@ class GameScene: SKScene {
                         child.position.x - relativePosition.x,
                         child.position.y - relativePosition.y
                     )
-
-                if distance < minAllowedDistance {
-                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-                    self.onTreeZoneHit?()
-                    return
-                }
+                    let minAllowedDistance: CGFloat = 30
+                    if distance < minAllowedDistance {
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                        self.onTreeZoneHit?()
+                        return
+                    }
                 }
             }
 
@@ -248,32 +249,39 @@ class GameScene: SKScene {
             if self.treesShot >= self.treesTarget {
                 // Jangan tampilkan indicator lagi karena sudah selesai
             } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() ) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     guard let indicator = self.treeIndicator else { return }
-                    
+
                     // Set posisi awal lebih tinggi
                     let normalY = self.circle.position.y + 300
                     let startY = normalY + 30  // Mulai dari 100 point lebih tinggi
-                    
-                    indicator.position = CGPoint(x: self.circle.position.x, y: startY)
+
+                    indicator.position = CGPoint(
+                        x: self.circle.position.x, y: startY)
                     indicator.alpha = 0  // Mulai transparan
                     indicator.isHidden = false
-                    
+
                     // Animasi turun ke posisi normal sambil fade in
                     let moveDown = SKAction.moveTo(y: normalY, duration: 0.1)
                     let fadeIn = SKAction.fadeAlpha(to: 0.7, duration: 0.1)  // Fade ke alpha normal (0.7)
                     let appearGroup = SKAction.group([moveDown, fadeIn])
-                    
+
                     // Setelah muncul, lanjutkan dengan animasi floating
                     let setupFloating = SKAction.run {
-                        let floatUp = SKAction.moveBy(x: 0, y: 10, duration: 1.0)
-                        let floatDown = SKAction.moveBy(x: 0, y: -10, duration: 1.0)
-                        let floatSequence = SKAction.sequence([floatUp, floatDown])
+                        let floatUp = SKAction.moveBy(
+                            x: 0, y: 10, duration: 1.0)
+                        let floatDown = SKAction.moveBy(
+                            x: 0, y: -10, duration: 1.0)
+                        let floatSequence = SKAction.sequence([
+                            floatUp, floatDown,
+                        ])
                         let floatForever = SKAction.repeatForever(floatSequence)
                         indicator.run(floatForever, withKey: "floating")
                     }
-                    
-                    let sequence = SKAction.sequence([appearGroup, setupFloating])
+
+                    let sequence = SKAction.sequence([
+                        appearGroup, setupFloating,
+                    ])
                     indicator.run(sequence)
                 }
             }
