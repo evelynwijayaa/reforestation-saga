@@ -40,7 +40,7 @@ struct MissionFailedPopUp: View {
                         .padding(.top, 80 + (-35))
                         .padding(.bottom, 37)
                 default:
-                    Text("You hit the planted tree!")
+                    Text("Plant somewhere else!")
                         .font(
                             Font.custom("Genos", size: 20.58992)
                                 .weight(.regular)

@@ -44,6 +44,7 @@ struct GameView: View {
     }
 
     func setupScene() {
+        reason = "laut";
         let newTrees = treesForLevel(currentLevel)
         self.treesNeeded = newTrees
         let newScene = GameScene(size: UIScreen.main.bounds.size)
