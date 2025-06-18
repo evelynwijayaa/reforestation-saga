@@ -11,42 +11,20 @@ struct BlinkAlert: View {
     var body: some View {
         VStack {
             ZStack {
-                Image("questbox")
+                Image("initialalert")
                     .resizable()
-                    .frame(width: 329, height: 41)
+                    .frame(width: 350, height: 41)
                 
-                Text("Blink to launch a tree")
+                Text("Trees can not be planted on the ocean")
                   .font(
                     Font.custom("Genos", size: 18)
-                      .weight(.medium)
+                        .weight(.medium)
                   )
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
-                  .frame(width: 272, alignment: .top)
+                  .frame(width: 350, alignment: .top)
+                  .padding(.bottom, 10)
             }
-        
-        ZStack {
-            Image("missionfailedbox")
-                .resizable()
-                .frame(width: 329, height: 65)
-            
-            VStack {
-                Text("ALERT!")
-                    .font(Font.custom("Gugi", size: 18))
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color(red: 1, green: 0.42, blue: 0.36))
-                    .frame(width: 272, alignment: .top)
-                
-                Text("Your face is not detected")
-                  .font(
-                    Font.custom("Genos", size: 18)
-                      .weight(.medium)
-                  )
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(Color(red: 1, green: 0.42, blue: 0.36))
-                  .frame(width: 272, alignment: .top)
-            }
-        }
     }
     }
 }
@@ -54,5 +32,5 @@ struct BlinkAlert: View {
 #Preview {
     BlinkAlert()
         .padding()
-        .background(.black.opacity(0.5))
+//        .background(.black.opacity(0.5))
 }

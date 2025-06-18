@@ -20,6 +20,8 @@ struct GameView: View {
     @State private var showLevelClearPopup = false
     @State private var treesNeeded: Int = 3
     @State private var hasSetupScene = false
+    @State private var showInitialBlinkAlert: Bool = true
+    @State private var hasPlantedFirstTree: Bool = false
 
     //buat preview
     init() {
@@ -31,15 +33,13 @@ struct GameView: View {
     }
 
     // Custom init untuk preview
-    init(
-        scene: GameScene?, currentLevel: Int, isMuted: Bool,
-        treesRemaining: Int, treesNeeded: Int
-    ) {
+    init(scene: GameScene?, currentLevel: Int, isMuted: Bool, treesRemaining: Int, treesNeeded: Int, showInitialBlinkAlert: Bool = true) {
         _scene = State(initialValue: scene)
         _currentLevel = State(initialValue: currentLevel)
         _isMuted = State(initialValue: isMuted)
         _treesRemaining = State(initialValue: treesRemaining)
         _treesNeeded = State(initialValue: treesNeeded)
+        _showInitialBlinkAlert = State(initialValue: showInitialBlinkAlert)
     }
 
     func setupScene() {
@@ -73,12 +73,15 @@ struct GameView: View {
         let rotationDuration: Double
         let rotateLeft: Bool
 
-        if currentLevel <= 3 {
-            rotationDuration = 2.0
+        switch currentLevel {
+        case 1...5:
+            rotationDuration = 4
             rotateLeft = false
-        } else {
-            // Level 4 dan seterusnya random
-            rotationDuration = Double.random(in: 1.0...3.5)
+        case 6...10:
+            rotationDuration = 3
+            rotateLeft = Bool.random()
+        default:
+            rotationDuration = Double.random(in: 1.5...4)
             rotateLeft = Bool.random()
         }
 
@@ -166,6 +169,7 @@ struct GameView: View {
                             UserDefaults.standard.savedHighestLevel
                         showMissionFailedPopup = false
                         setupScene()
+                        showInitialBlinkAlert = true
                     }
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -173,20 +177,35 @@ struct GameView: View {
                 .transition(.scale)
                 .zIndex(2)
             }
+            
+            if showInitialBlinkAlert {
+                BlinkAlert()
+                    .transition(.opacity)
+                    .zIndex(3)
+            }
         }
         .navigationBarBackButtonHidden(true)
 
         //buat tes preview
-        #if DEBUG
-            .onTapGesture {
+#if DEBUG
+        .onTapGesture {
+            if showInitialBlinkAlert {
+                showInitialBlinkAlert = false
+                hasPlantedFirstTree = true
+                scene?.shootNeedle()
+            } else {
                 scene?.shootNeedle()
             }
-        #endif
+        }
+
+#endif
 
         .animation(.easeInOut(duration: 0.3), value: showMissionFailedPopup)
         .animation(.easeInOut(duration: 0.3), value: showLevelClearPopup)
+        .animation(.easeInOut(duration: 0.3), value: showInitialBlinkAlert)
 
         .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
             guard !hasSetupScene else { return }
             let newScene = GameScene(size: CGSize(width: 400, height: 800))
             newScene.scaleMode = .resizeFill
@@ -196,10 +215,14 @@ struct GameView: View {
             self.scene = newScene
 
             setupScene()
-            GameMusicManager.shared.playMusic()
+            GameMusicManager.shared.stopMusic()
+            GameMusicManager.shared.playMusic(filename: "GameEasy")
 //            if let scene = scene {
 //                GameMechanics.shared.setupBackgroundMusic(in: scene)
 //            }
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false // aktifkan lagi kalau mau
         }
         .onChange(of: showMissionFailedPopup) { newValue in
             if newValue {
@@ -221,7 +244,11 @@ struct GameView: View {
         }
         // 🔥 Detect change and trigger function
         .onChange(of: detector.blinkCount) {
-            if !showMissionFailedPopup && !showLevelClearPopup {
+            if showInitialBlinkAlert {
+                showInitialBlinkAlert = false
+                hasPlantedFirstTree = true
+                scene?.shootNeedle()
+            } else if !showMissionFailedPopup && !showLevelClearPopup {
                 scene?.shootNeedle()
             }
         }
@@ -265,7 +292,8 @@ extension GameView {
             currentLevel: 1,
             isMuted: false,
             treesRemaining: 3,
-            treesNeeded: 3
+            treesNeeded: 3,
+            showInitialBlinkAlert: true
         )
 
         return view
