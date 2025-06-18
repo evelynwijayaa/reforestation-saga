@@ -159,7 +159,6 @@ class GameScene: SKScene {
     }
 
     func shootNeedle() {
-        guard isGameActive else { return }
         guard remainingTrees > 0 else { return }
         guard isFail == false else { return }
         GameMusicManager.shared.playSoundEffect(filename: "TreeSFX")
