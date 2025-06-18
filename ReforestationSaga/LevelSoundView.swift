@@ -38,9 +38,9 @@ struct LevelSoundView: View {
             Button {
                 isMuted.toggle()
                 if isMuted {
-                    scene?.pauseMusic()
+                    GameMusicManager.shared.pauseMusic()
                 } else {
-                    scene?.resumeMusic()
+                    GameMusicManager.shared.resumeMusic()
                 }
             } label: {
                 Image(isMuted ? "soundoff" :"sound")

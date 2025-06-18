@@ -41,9 +41,9 @@ struct HomeView: View {
                 Button {
                     isMuted.toggle()
                     if isMuted {
-                        scene?.pauseMusic()
+                        GameMusicManager.shared.pauseMusic()
                     } else {
-                        scene?.resumeMusic()
+                        GameMusicManager.shared.resumeMusic()
                     }
                 } label: {
                     Image(isMuted ? "soundoff" : "sound")
@@ -94,76 +94,73 @@ struct HomeView: View {
                                     .shadow(
                                         color: .white.opacity(0.4), radius: 10)
 
-                                Button(action: {
-                                    QuestView = true
-                                }) {
-                                    Text("Tap to Play")
-                                        .font(
-                                            Font.custom("Electrolize", size: 14)
-                                        )
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(
-                                            Color(
-                                                red: 0.94, green: 0.84,
-                                                blue: 0.65)
-                                        )
-                                        .padding(.top, 20)
-                                }
-                                .padding(.bottom, 70)
+                                Text("Tap to Play")
+                                    .font(Font.custom("Electrolize", size: 17))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
+                                    .padding(.top, 20)
+                                    .padding(.bottom, 70)
                             }
                             .padding(.top, 23)
-                            //                            .background(Color.red.opacity(0.1))
+//                                                        .background(Color.red.opacity(0.1))
 
                         } else {
                             ZStack {
                                 Image("questbox")
                                     .resizable()
-                                    //                                    .scaledToFit()
-                                    .padding(.top, 60)
+                                    .padding(.top, 120)
                                     .padding(.bottom, 30)
-                                    .frame(width: 360, height: 300)
-//                                                                    .background(Color.red.opacity(0.1))
+                                    .frame(width: 380, height: 380)
 
                                 (Text("Welcome aboard, Cadet!\n\n ")
-                                    .font(Font.custom("Gugi", size: 14))
+                                    .font(Font.custom("Gugi", size: 17))
                                     + Text("You’ve arrived at ").font(
-                                        Font.custom("Genos", size: 14))
+                                        Font.custom("Genos", size: 17))
                                     + Text("Intergalactic Reforestation Unit")
-                                    .font(Font.custom("Genos-bold", size: 14))
+                                    .font(Font.custom("Genos-bold", size: 17))
                                     + Text(
                                         ", stationed on the edge of the exosphere.\nWe aim to help planets in crisis, overheating, choking on carbon, and/or running out of time.\n\nBut before we brief you, "
-                                    ).font(Font.custom("Genos", size: 14))
+                                    ).font(Font.custom("Genos", size: 17))
                                     + Text("we need to verify your identity")
-                                    .font(Font.custom("Genos-bold", size: 14))
+                                    .font(Font.custom("Genos-bold", size: 17))
                                     + Text(
                                         ". Please align your face with the scanner."
-                                    ).font(Font.custom("Genos", size: 14)))
+                                    ).font(Font.custom("Genos", size: 17)))
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(
                                         Color(
                                             red: 0.94, green: 0.84, blue: 0.65)
                                     )
-                                    .frame(width: 280)
-                                    .padding(.top, 20)
-                                //                                    .transition(.opacity)
+                                    .frame(width: 350)
+                                    .padding(.top, 80)
+
 
                                 NavigationLink(destination: CameraCheckView()) {
                                     Image("verifybutton")
                                         .resizable()
-                                        .frame(width: 73, height: 31)
-                                        .padding(.top, 230)
-                                        .padding(.leading, 250)
+                                        .frame(width: 95, height: 44)
+                                        .padding(.top, 320)
+                                        .padding(.leading, 240)
                                 }
                             }
-                            .padding(.top, -32)
+                            .padding(.top, -109)
                         }
                     }
                     .frame(width: geometry.size.width)
                     .position(
                         x: geometry.size.width / 2,
                         y: geometry.size.height / 2)
+                    .contentShape(Rectangle()) // Buat seluruh area bisa ditap
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                    QuestView = true
+                                }
+                        }
                 }
             }
+        }
+        .onAppear() {
+            GameMusicManager.shared.playMusic(filename: "IntroSpace")
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

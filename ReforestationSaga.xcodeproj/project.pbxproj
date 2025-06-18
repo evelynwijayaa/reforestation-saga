@@ -21,6 +21,11 @@
 			path = ReforestationSaga;
 			sourceTree = "<group>";
 		};
+		8FE2FA402E010BB7009B9FC6 /* Sound */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sound;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +45,7 @@
 				043E97242DFBCC4A0089B6E0 /* .gitignore */,
 				046D15D22DF4647D00341454 /* ReforestationSaga */,
 				046D15D12DF4647D00341454 /* Products */,
+				8FE2FA402E010BB7009B9FC6 /* Sound */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +74,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				046D15D22DF4647D00341454 /* ReforestationSaga */,
+				8FE2FA402E010BB7009B9FC6 /* Sound */,
 			);
 			name = ReforestationSaga;
 			packageProductDependencies = (

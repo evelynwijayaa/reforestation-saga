@@ -48,6 +48,16 @@ struct IntroView: View {
                                 currentLevel: currentLevel,
                                 scene: gamescene
                             )
+                            .offset(y: 37)
+                            Button {
+                                isMuted.toggle()
+                                if isMuted {
+                                    GameMusicManager.shared.pauseMusic()
+                                } else {
+                                    GameMusicManager.shared.resumeMusic()
+                                }
+                            } label: {
+                            }
                         }
                     }
                     .padding(.top, -5)
