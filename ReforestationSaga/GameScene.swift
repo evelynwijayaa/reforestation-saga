@@ -10,7 +10,7 @@ import SpriteKit
 import SwiftUI
 
 class GameScene: SKScene {
-    let circle = SKSpriteNode(imageNamed: "bumi")
+    let circle = SKSpriteNode(imageNamed: "buminew")
     let needleContainer = SKNode()
     var onFailZoneHit: (() -> Void)?  // Closure untuk trigger alert dari SwiftUI
 
@@ -19,11 +19,13 @@ class GameScene: SKScene {
 
     private var treesShot = 0
     private var treesTarget = 3  // default level 1
+    private var isGameActive = true
     func configureLevel(
         treesNeeded: Int,
         rotationDuration: Double,
         rotateLeft: Bool
     ) {
+        isGameActive = true
         treesShot = 0
         treesTarget = treesNeeded
         resetNeedles()
@@ -49,8 +51,8 @@ class GameScene: SKScene {
         self.backgroundColor = .clear
         view.allowsTransparency = true
 
-        circle.size = CGSize(width: 400, height: 400)
-        circle.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        circle.size = CGSize(width: 590, height: 590)
+        circle.position = CGPoint(x: size.width / 2, y: size.height / 2.8)
         addChild(circle)
 
         // Tambahkan needle container ke dalam lingkaran
@@ -59,34 +61,50 @@ class GameScene: SKScene {
         setForbiddenArea()
     }
 
+    private func arcPath(radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) -> UIBezierPath {
+            let arcPath = UIBezierPath()
+            arcPath.move(to: .zero)
+            arcPath.addArc(withCenter: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+            arcPath.close()
+            
+            return arcPath
+        }
+    
     func setForbiddenArea() {
-        var failZone = SKShapeNode(rectOf: CGSize(width: 200, height: 110))
-        //        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
+        
+    //YANG PERTAMA
+        
+        var failZone = SKShapeNode(path: arcPath(radius: 300, startAngle: 6, endAngle: 6.97).cgPath);
+        
+//        var failZone = SKShapeNode(rectOf: CGSize(width: 200, height: 105))
+//        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
-        failZone.position = CGPoint(x: 100, y: 22)  // relatif terhadap center circle
+        failZone.position = CGPoint(x: 0, y: 0)  // relatif terhadap center circle
         failZone.name = "failZone-1"
         circle.addChild(failZone)
 
-        failZone = SKShapeNode(rectOf: CGSize(width: 200, height: 150))
-        //        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
+    //YANG KEDUA
+        failZone = SKShapeNode(path: arcPath(radius: 300, startAngle: 3.96, endAngle: 5.30).cgPath);
+        
+//        failZone = SKShapeNode(rectOf: CGSize(width: 143, height: 150))
+//                failZone.fillColor = .gold.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
-        failZone.position = CGPoint(x: -20, y: -120)  // relatif terhadap center circle
         failZone.name = "failZone-2"
         circle.addChild(failZone)
 
-        failZone = SKShapeNode(rectOf: CGSize(width: 30, height: 100))
-        //        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
+    //YANG KETIGA
+        failZone = SKShapeNode(path: arcPath(radius: 300, startAngle: 4.73, endAngle: 4.88).cgPath);
+//                failZone.fillColor = .blue.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
         failZone.zRotation = 45
-        failZone.position = CGPoint(x: 150, y: -80)  // relatif terhadap center circle
         failZone.name = "failZone-3"
         circle.addChild(failZone)
 
-        failZone = SKShapeNode(rectOf: CGSize(width: 35, height: 100))
-        //        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
+    //YANG KEEMPAT
+        failZone = SKShapeNode(path: arcPath(radius: 300, startAngle: 1.62, endAngle: 1.76).cgPath);
+//        failZone.fillColor = .purple.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
         failZone.zRotation = 1
-        failZone.position = CGPoint(x: -130, y: 70)  // relatif terhadap center circle
         failZone.name = "failZone-4"
         circle.addChild(failZone)
     }
@@ -96,6 +114,7 @@ class GameScene: SKScene {
     }
 
     func shootNeedle() {
+        guard isGameActive else { return }
         guard remainingTrees > 0 else { return }
 
         let needle = SKSpriteNode(imageNamed: "pohon")
@@ -103,7 +122,7 @@ class GameScene: SKScene {
 
         needle.size = CGSize(width: 30, height: needleLength)
 
-        //        let needle = SKSpriteNode(color: .black, size: CGSize(width: 4, height: needleLength))
+//                let needle = SKSpriteNode(color: .white, size: CGSize(width: 4, height: needleLength))
 
         // Posisi awal jarum (di atas lingkaran)
         let startY = circle.position.y + 300
@@ -118,7 +137,7 @@ class GameScene: SKScene {
             y: circle.position.y + circleRadius + needleLength / 2
         )
 
-        let move = SKAction.move(to: targetPoint, duration: 0.3)
+        let move = SKAction.move(to: targetPoint, duration: 0.2)
 
         let stickToCircle = SKAction.run {
             needle.removeAllActions()
@@ -138,26 +157,33 @@ class GameScene: SKScene {
                 if let failZone = self.circle.childNode(withName: zoneName),
                     failZone.contains(relativePosition)
                 {
-
-                    needle.removeFromParent()
-                    self.resetNeedles()
-
+//                    needle.removeFromParent()
+//                    self.resetNeedles()
+                    
                     // Trigger alert & efek
                     needle.removeAllChildren()
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     self.onFailZoneHit?()
+                    self.isGameActive = false
                     return
                 }
             }
 
             // Cek bentrok dengan pohon yang sudah tertempel
             for child in self.needleContainer.children {
-                if child.name == "treeZone", child.contains(relativePosition) {
-                    needle.removeFromParent()
-                    self.resetNeedles()
+                if child.name == "treeZone" {
+                    let distance = hypot(
+                    child.position.x - relativePosition.x,
+                    child.position.y - relativePosition.y
+                )
+                
+                let minAllowedDistance: CGFloat = 30  // Sesuaikan dengan ukuran pohon kamu
+
+                if distance < minAllowedDistance {
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     self.onFailZoneHit?()
                     return
+                }
                 }
             }
 
@@ -173,6 +199,10 @@ class GameScene: SKScene {
             //tambahan eve
             self.treesShot += 1
             self.onTreeHit?()
+            
+            if self.treesShot >= self.treesTarget {
+                self.isGameActive = false  // Matikan input, tunggu level complete handler
+            }
         }
 
         let sequence = SKAction.sequence([move, stickToCircle])

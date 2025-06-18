@@ -182,6 +182,7 @@ struct GameView: View {
                 BlinkAlert()
                     .transition(.opacity)
                     .zIndex(3)
+                    .padding(.top,220)
             }
         }
         .navigationBarBackButtonHidden(true)
