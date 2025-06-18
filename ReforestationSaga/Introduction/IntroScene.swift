@@ -40,7 +40,7 @@ class IntroScene: SKScene {
         missionTitle.fontName = "Gugi"
         missionTitle.fontSize = 17
         missionTitle.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
-        missionTitle.position = CGPoint(x: 0, y: 190)
+        missionTitle.position = CGPoint(x: 0, y: 220)
         missionPanel.addChild(missionTitle)
         
         setupMissionDescription()
@@ -111,7 +111,7 @@ class IntroScene: SKScene {
                 label.text = line
             }
             
-            label.position = CGPoint(x: 0, y: 145 - CGFloat(index * 20))
+            label.position = CGPoint(x: 0, y: 170 - CGFloat(index * 20))
             missionPanel.addChild(label)
         }
     }
@@ -143,7 +143,7 @@ class IntroScene: SKScene {
             label.fontSize = 17
             label.fontColor = UIColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
             label.text = line
-            label.position = CGPoint(x: 0, y: -70 - CGFloat(index * 18))
+            label.position = CGPoint(x: 0, y: -45 - CGFloat(index * 18))
             
             missionPanel.addChild(label)
         }
@@ -151,11 +151,11 @@ class IntroScene: SKScene {
     
     private func setupEyeSymbols() {
         let eye1 = createEyeSymbol()
-        eye1.position = CGPoint(x: -30, y: -180)
+        eye1.position = CGPoint(x: -30, y: -150)
         missionPanel.addChild(eye1)
         
         let eye2 = createEyeSymbol()
-        eye2.position = CGPoint(x: 30, y: -180)
+        eye2.position = CGPoint(x: 30, y: -150)
         missionPanel.addChild(eye2)
         
         animateEyes([eye1, eye2])
