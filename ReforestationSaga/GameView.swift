@@ -22,6 +22,7 @@ struct GameView: View {
     @State private var hasSetupScene = false
     @State private var showInitialBlinkAlert: Bool = true
     @State private var hasPlantedFirstTree: Bool = false
+    @State private var reason: String = "laut"
 
     //buat preview
     init() {
@@ -48,6 +49,10 @@ struct GameView: View {
         let newScene = GameScene(size: UIScreen.main.bounds.size)
         newScene.scaleMode = .resizeFill
         newScene.onFailZoneHit = {
+            showMissionFailedPopup = true
+        }
+        newScene.onTreeZoneHit = {
+            reason = "pohon"
             showMissionFailedPopup = true
         }
         newScene.onTreeHit = {
@@ -162,6 +167,7 @@ struct GameView: View {
             if showMissionFailedPopup {
                 MissionFailedPopUp(
                     currentLevel: $currentLevel,
+                    reason: $reason,
                     isNewHighScore: currentLevel - 1 >= gameData.highestLevel,
                     onNextMission: {
                         currentLevel = 1
