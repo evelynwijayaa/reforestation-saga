@@ -199,9 +199,13 @@ struct GameView: View {
             if showInitialBlinkAlert {
                 showInitialBlinkAlert = false
                 hasPlantedFirstTree = true
-                scene?.shootNeedle()
+                if (treesRemaining > 0) {
+                    scene?.shootNeedle()
+                }
             } else {
-                scene?.shootNeedle()
+                if (treesRemaining > 0) {
+                    scene?.shootNeedle()
+                }
             }
         }
 
@@ -254,7 +258,9 @@ struct GameView: View {
             if showInitialBlinkAlert {
                 showInitialBlinkAlert = false
                 hasPlantedFirstTree = true
-                scene?.shootNeedle()
+                if (treesRemaining > 0) {
+                    scene?.shootNeedle()
+                }
             } else if !showMissionFailedPopup && !showLevelClearPopup {
                 scene?.shootNeedle()
             }
