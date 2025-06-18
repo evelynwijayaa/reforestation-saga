@@ -13,6 +13,7 @@ class GameScene: SKScene {
     let circle = SKSpriteNode(imageNamed: "buminew")
     let needleContainer = SKNode()
     var onFailZoneHit: (() -> Void)?  // Closure untuk trigger alert dari SwiftUI
+    var onTreeZoneHit: (() -> Void)?
 
     //tambahan eve
     var onTreeHit: (() -> Void)?
@@ -219,7 +220,7 @@ class GameScene: SKScene {
 
                 if distance < minAllowedDistance {
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-                    self.onFailZoneHit?()
+                    self.onTreeZoneHit?()
                     return
                 }
                 }
