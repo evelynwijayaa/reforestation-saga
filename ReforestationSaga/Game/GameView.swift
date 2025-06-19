@@ -44,6 +44,12 @@ struct GameView: View {
     }
 
     func setupScene() {
+        if let oldScene = scene {
+            oldScene.removeAllActions()
+            oldScene.removeAllChildren()
+            oldScene.removeFromParent()
+        }
+        
         reason = "laut";
         let newTrees = treesForLevel(currentLevel)
         self.treesNeeded = newTrees
@@ -123,7 +129,6 @@ struct GameView: View {
                     ?? GameScene(size: UIScreen.main.bounds.size),
                 options: [.allowsTransparency]
             )
-//            .frame(width: 300, height: 600)
             .id(sceneID)  // ini kuncinya!
             .ignoresSafeArea()
             VStack {
@@ -229,9 +234,6 @@ struct GameView: View {
             setupScene()
             GameMusicManager.shared.stopMusic()
             GameMusicManager.shared.playMusic(filename: "GameEasy")
-//            if let scene = scene {
-//                GameMechanics.shared.setupBackgroundMusic(in: scene)
-//            }
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false // aktifkan lagi kalau mau

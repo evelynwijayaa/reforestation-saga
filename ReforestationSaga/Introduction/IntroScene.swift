@@ -20,7 +20,6 @@ class IntroScene: SKScene {
         setupUI()
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
         setupMissionPanel()
     }
@@ -31,7 +30,6 @@ class IntroScene: SKScene {
         missionPanel.position = CGPoint(x: size.width/2, y: size.height / 2)
         missionPanel.zPosition = 5
         addChild(missionPanel)
-        
         setupMissionContent()
     }
     
@@ -42,30 +40,25 @@ class IntroScene: SKScene {
         missionTitle.fontColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
         missionTitle.position = CGPoint(x: 0, y: 220)
         missionPanel.addChild(missionTitle)
-        
         setupMissionDescription()
-        
         setupInstructions()
-        
         setupEyeSymbols()
     }
     
     private func setupMissionDescription() {
         let descriptionLines = [
-            "Target Planet: Earth.",                        // Index 0 - BOLD 1 baris
-            "",                                             // Index 1
-            "Atmospheric carbon levels have",               // Index 2
-            "surged. Temperatures are rising. Life ",       // Index 3
-            "systems are destabilizing.",                   // Index 4
-            "",                                             // Index 5
-            "Your objective: Deploy carbon-",               // Index 6 - BOLD (hanya string "Your objective")
-            "capture units via orbital tree pods to",       // Index 7
-            "help reforest high-emission zones."            // Index 8
+            "Target Planet: Earth.",
+            "",
+            "Atmospheric carbon levels have",
+            "surged. Temperatures are rising. Life ",
+            "systems are destabilizing.",
+            "",
+            "Your objective: Deploy carbon-",
+            "capture units via orbital tree pods to",
+            "help reforest high-emission zones."
         ]
         
         let partialBoldWords: [Int: [String]] = [
-//            4: ["Xarbon"],
-//            5: ["overheating the planet"],
             6: ["Your objective"]
         ]
         
@@ -79,7 +72,6 @@ class IntroScene: SKScene {
             let label = SKLabelNode()
             
             if let wordsToBold = partialBoldWords[index] {
-                // NSMutableAttributedString untuk partial bold
                 let attributedString = NSMutableAttributedString(
                     string: line,
                     attributes: [
@@ -101,7 +93,7 @@ class IntroScene: SKScene {
                 
                 label.attributedText = attributedString
                 
-            } else { // Untuk baris yang seluruhnya bold atau normal
+            } else {
                 let shouldBeBold = fullLineBoldIndices.contains(index)
                 let fontName = shouldBeBold ? "Genos-Bold" : "Genos"
                 
@@ -164,14 +156,12 @@ class IntroScene: SKScene {
     private func createEyeSymbol() -> SKNode {
         let eyeContainer = SKNode()
         
-        // Eye outline
         let eyeOutline = SKShapeNode(ellipseOf: CGSize(width: 40, height: 25))
         eyeOutline.strokeColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)
         eyeOutline.lineWidth = 2
         eyeOutline.fillColor = .clear
         eyeContainer.addChild(eyeOutline)
         
-        // Pupil
         let pupilSize: CGFloat = 14
         let pupil = SKShapeNode(circleOfRadius: pupilSize / 2)
         pupil.fillColor = SKColor(red: 0.94, green: 0.84, blue: 0.65, alpha: 1.0)

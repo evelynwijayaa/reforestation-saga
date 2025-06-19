@@ -12,18 +12,13 @@ import SwiftUI
 class GameScene: SKScene {
     let circle = SKSpriteNode(imageNamed: "buminew")
     let needleContainer = SKNode()
-    var onFailZoneHit: (() -> Void)?  // Closure untuk trigger alert dari SwiftUI
+    var onFailZoneHit: (() -> Void)?
     var onTreeZoneHit: (() -> Void)?
     var isFail: Bool = false
-
-    //tambahan eve
     var onTreeHit: (() -> Void)?
-
-    // Tambahan untuk visual tree indicator
     private var treeIndicator: SKSpriteNode?
-
     private var treesShot = 0
-    private var treesTarget = 3  // default level 1
+    private var treesTarget = 3
 
     func configureLevel(
         treesNeeded: Int,
@@ -33,9 +28,7 @@ class GameScene: SKScene {
         treesShot = 0
         treesTarget = treesNeeded
         resetNeedles()
-        setupTreeIndicator()  // Setup indicator saat level dimulai
-
-        // Show indicator karena ada trees remaining
+        setupTreeIndicator()
         treeIndicator?.isHidden = false
 
         circle.removeAllActions()
@@ -64,16 +57,13 @@ class GameScene: SKScene {
         circle.position = CGPoint(x: size.width / 2, y: size.height / 2.8)
         addChild(circle)
 
-        // Tambahkan needle container ke dalam lingkaran
         circle.addChild(needleContainer)
 
         setForbiddenArea()
         setupTreeIndicator()
     }
 
-    // Fungsi baru untuk setup tree indicator
     private func setupTreeIndicator() {
-        // Remove existing indicator if any
         treeIndicator?.removeFromParent()
 
         // Create new tree indicator
@@ -82,16 +72,14 @@ class GameScene: SKScene {
 
         indicator.size = CGSize(width: 30, height: 70)
 
-        // Position di atas lingkaran (sama dengan startY di shootNeedle)
         let startY = circle.position.y + 300
         indicator.position = CGPoint(x: circle.position.x, y: startY)
         indicator.zRotation = 0
-        indicator.alpha = 0.7  // Buat sedikit transparan untuk menunjukkan ini hanya indicator
+        indicator.alpha = 0.7
         indicator.name = "treeIndicator"
 
         addChild(indicator)
 
-        // Tambahkan sedikit animasi floating untuk membuat indicator lebih menarik
         let floatUp = SKAction.moveBy(x: 0, y: 10, duration: 1.0)
         let floatDown = SKAction.moveBy(x: 0, y: -10, duration: 1.0)
         let floatSequence = SKAction.sequence([floatUp, floatDown])
@@ -120,8 +108,6 @@ class GameScene: SKScene {
         var failZone = SKShapeNode(
             path: arcPath(radius: 300, startAngle: 6, endAngle: 6.97).cgPath)
 
-        //        var failZone = SKShapeNode(rectOf: CGSize(width: 200, height: 105))
-        //        failZone.fillColor = .red.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
         failZone.position = CGPoint(x: 0, y: 0)  // relatif terhadap center circle
         failZone.name = "failZone-1"
@@ -131,8 +117,6 @@ class GameScene: SKScene {
         failZone = SKShapeNode(
             path: arcPath(radius: 300, startAngle: 3.96, endAngle: 5.30).cgPath)
 
-        //        failZone = SKShapeNode(rectOf: CGSize(width: 143, height: 150))
-        //                failZone.fillColor = .gold.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
         failZone.name = "failZone-2"
         circle.addChild(failZone)
@@ -140,7 +124,7 @@ class GameScene: SKScene {
         //YANG KETIGA
         failZone = SKShapeNode(
             path: arcPath(radius: 300, startAngle: 4.73, endAngle: 4.88).cgPath)
-        //                failZone.fillColor = .blue.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
+
         failZone.strokeColor = .clear
         failZone.zRotation = 45
         failZone.name = "failZone-3"
@@ -149,7 +133,6 @@ class GameScene: SKScene {
         //YANG KEEMPAT
         failZone = SKShapeNode(
             path: arcPath(radius: 300, startAngle: 1.62, endAngle: 1.76).cgPath)
-        //        failZone.fillColor = .purple.withAlphaComponent(0.3)  // untuk debug, bisa diset ke 0 nanti
         failZone.strokeColor = .clear
         failZone.zRotation = 1
         failZone.name = "failZone-4"
@@ -169,8 +152,6 @@ class GameScene: SKScene {
         let needleLength: CGFloat = 70
 
         needle.size = CGSize(width: 30, height: needleLength)
-
-        //                let needle = SKSpriteNode(color: .white, size: CGSize(width: 4, height: needleLength))
 
         // Posisi awal jarum (di atas lingkaran) - sama dengan indicator
         let startY = circle.position.y + 300
@@ -205,10 +186,6 @@ class GameScene: SKScene {
                 if let failZone = self.circle.childNode(withName: zoneName),
                     failZone.contains(relativePosition)
                 {
-                    //                    needle.removeFromParent()
-                    //                    self.resetNeedles()
-
-                    // Trigger alert & efek
                     needle.removeAllChildren()
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     self.isFail = true

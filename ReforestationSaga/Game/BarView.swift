@@ -10,12 +10,6 @@ import SwiftUI
 struct BarView: View {
     var treesRemaining: Int
     var totalPollution: Int
-//    @State private var totalPollution: Int = 0
-//    
-//    init(treesRemaining: Int) {
-//            self.treesRemaining = treesRemaining
-//            self.totalPollution = treesRemaining // ambil nilai awal saat pertama dibuat
-//        }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,14 +18,12 @@ struct BarView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
                 .padding(.bottom, 8)
-//                .background(.white)
-           
+            
             ZStack {
                 Image("pollution")
                     .resizable(capInsets: EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8), resizingMode: .stretch)
-                    .frame(width: CGFloat(16 * totalPollution), height: 31) // dinamis panjangnya
-//                    .rotationEffect(Angle(degrees: 90))
-
+                    .frame(width: CGFloat(16 * totalPollution), height: 31)
+                
                 HStack(spacing: 2) {
                     ForEach((0..<totalPollution).reversed(), id: \.self) { index in
                         Rectangle()
@@ -39,8 +31,8 @@ struct BarView: View {
                             .foregroundColor(.clear)
                             .background(
                                 index < (totalPollution - treesRemaining) ?
-                                    Color(red: 0.99, green: 0.56, blue: 0.13).opacity(0.2) : // sudah bersih
-                                    Color(red: 1, green: 0.18, blue: 0.18) // masih polusi
+                                Color(red: 0.99, green: 0.56, blue: 0.13).opacity(0.2) : // sudah bersih
+                                Color(red: 1, green: 0.18, blue: 0.18) // masih polusi
                             )
                             .cornerRadius(1.58)
                     }
@@ -52,17 +44,7 @@ struct BarView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
                 .padding(.top, 12)
-//            .background()
         }
-//        .onChange(of: treesRemaining) { newValue in
-//            // Kalau naik, berarti ganti level
-//            if newValue > totalPollution {
-//                totalPollution = newValue
-//            }
-//        }
-//        .onAppear {
-//            totalPollution = treesRemaining
-//        }
     }
 }
 

@@ -51,18 +51,14 @@ struct HomeView: View {
                         .scaledToFit()
                         .frame(width: 35, height: 35)
                 }
-                //                            .position(x: geometry.size.width * 0.10, y: 55)
-                //                            .padding(.trailing, 120)
+
                 .padding(.leading, 300)
-                //                        }
                 .padding(.top, 55)
                 .zIndex(2)
                 .buttonStyle(PlainButtonStyle())
 
-                // Konten utama
                 GeometryReader { geometry in
                     VStack {
-
                         ZStack {
                             Image("cahayaungu")
                                 .resizable()
@@ -82,7 +78,6 @@ struct HomeView: View {
                         .padding(.top, 50)
 
                         if !QuestView {
-                            // Judul Game
                             VStack {
                                 Text("\n\nREFORESTATION\nSAGA")
                                     .font(Font.custom("Gugi", size: 32.28829))
@@ -102,7 +97,6 @@ struct HomeView: View {
                                     .padding(.bottom, 70)
                             }
                             .padding(.top, 23)
-//                                                        .background(Color.red.opacity(0.1))
 
                         } else {
                             ZStack {
@@ -150,7 +144,7 @@ struct HomeView: View {
                     .position(
                         x: geometry.size.width / 2,
                         y: geometry.size.height / 2)
-                    .contentShape(Rectangle()) // Buat seluruh area bisa ditap
+                    .contentShape(Rectangle())
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                     QuestView = true
