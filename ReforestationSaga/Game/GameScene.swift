@@ -186,6 +186,15 @@ class GameScene: SKScene {
                 if let failZone = self.circle.childNode(withName: zoneName),
                     failZone.contains(relativePosition)
                 {
+                   let splash = SKSpriteNode(imageNamed: "splash")
+                    splash.position = CGPoint(
+                        x: needle.position.x,
+                        y: needle.position.y - 15
+                    )
+                    splash.setScale(0.11)
+                    self.addChild(splash)
+
+                    // Trigger alert & efek
                     needle.removeAllChildren()
                     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                     self.isFail = true
@@ -204,6 +213,13 @@ class GameScene: SKScene {
                     let minAllowedDistance: CGFloat = 30
                     if distance < minAllowedDistance {
                         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                        let crash = SKSpriteNode(imageNamed: "crash")
+                        crash.position = CGPoint(
+                            x: needle.position.x + 10,
+                            y: needle.position.y + 15
+                        )
+                        crash.setScale(0.12)
+                        self.addChild(crash)
                         self.onTreeZoneHit?()
                         return
                     }
