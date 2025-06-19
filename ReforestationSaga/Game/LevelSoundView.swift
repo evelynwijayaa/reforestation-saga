@@ -20,13 +20,11 @@ struct LevelSoundView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.94, green: 0.84, blue: 0.65))
                 .padding(.bottom, 8)
-//                .background(.white)
            
             ZStack {
                 Image("box")
                     .resizable()
                     .frame(width: 100, height: 40)
-//                    .background(.red)
                 Text("LEVEL \(currentLevel)")
                     .font(Font.custom("Gugi", size: 14))
                     .multilineTextAlignment(.center)
@@ -50,7 +48,6 @@ struct LevelSoundView: View {
                     .padding(.top, -6)
                     .offset(x: 4)
             }
-//            .background()
         }
     }
 }

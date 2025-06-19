@@ -32,5 +32,4 @@ struct BlinkAlert: View {
 #Preview {
     BlinkAlert()
         .padding()
-//        .background(.black.opacity(0.5))
 }

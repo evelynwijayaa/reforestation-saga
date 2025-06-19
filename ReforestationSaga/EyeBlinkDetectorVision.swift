@@ -197,9 +197,6 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
                         < ($1.boundingBox.width * $1.boundingBox.height)
                 }) {
                     let face = largestFace
-//                    let faceBox = self.createBoundingBox(
-//                        for: face.boundingBox, in: previewLayer)
-//                    self.overlayLayer.addSublayer(faceBox)
 
                     if let landmarks = face.landmarks,
                         let leftEye = landmarks.leftEye,
@@ -240,19 +237,6 @@ class EyeBlinkDetectorVision: NSObject, ObservableObject, AVCaptureVideoDataOutp
             orientation: currentCameraPosition == .front
                 ? .leftMirrored : .right, options: [:])
         try? handler.perform([request])
-    }
-
-    private func createBoundingBox(
-        for rect: CGRect, in layer: AVCaptureVideoPreviewLayer
-    ) -> CAShapeLayer {
-        let convertedRect = convertBoundingBox(rect, in: layer)
-        let path = UIBezierPath(rect: convertedRect)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.green.cgColor
-        shapeLayer.lineWidth = 2
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        return shapeLayer
     }
 
     private func convertBoundingBox(

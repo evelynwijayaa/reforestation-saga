@@ -20,36 +20,23 @@ struct MissionFailedPopUp: View {
                     .resizable()
                     .frame(width: 329, height: 160)
 
-                Text("Mission Failed!")
-                    .font(Font.custom("Gugi", size: 35))
+                Text(reason == "laut" ? "The Tree floats away..." : "Careful! Tree Crash!")
+                    .font(Font.custom("Gugi", size: 26))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 1, green: 0.42, blue: 0.36))
                     .frame(width: 306, alignment: .top)
-                    .padding(.top, 15 + (-35))
+                    .padding(.top, 15 + (-40))
                     .padding(.bottom, 47)
 
-                switch reason {
-                case "laut":
-                    Text("Beware of the ocean!")
+                    Text("MISSION FAILED")
                         .font(
                             Font.custom("Genos", size: 20.58992)
                                 .weight(.regular)
                         )
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 1, green: 0.42, blue: 0.36))
-                        .padding(.top, 80 + (-35))
+                        .padding(.top, 75 + (-40))
                         .padding(.bottom, 37)
-                default:
-                    Text("Plant somewhere else!")
-                        .font(
-                            Font.custom("Genos", size: 20.58992)
-                                .weight(.regular)
-                        )
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 1, green: 0.42, blue: 0.36))
-                        .padding(.top, 80 + (-35))
-                        .padding(.bottom, 37)
-                }
 
                 if isNewHighScore {
                     Text("New Highest Level: \(gameData.highestLevel)")
@@ -99,7 +86,7 @@ struct MissionFailedPopUp: View {
 }
 
 #Preview {
-    @Previewable @State var reason = "laut"
+    @Previewable @State var reason = "pohon"
     MissionFailedPopUp(
         currentLevel: .constant(3), reason: $reason, isNewHighScore: false,
         onNextMission: { print("retry game") }
