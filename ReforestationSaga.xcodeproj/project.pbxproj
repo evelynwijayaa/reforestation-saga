@@ -266,7 +266,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReforestationSaga/Preview Content\"";
-				DEVELOPMENT_TEAM = 35K6F49UH8;
+				DEVELOPMENT_TEAM = XFZH4MQVN2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ReforestationSaga-App--Info.plist";
@@ -297,7 +297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReforestationSaga/Preview Content\"";
-				DEVELOPMENT_TEAM = 35K6F49UH8;
+				DEVELOPMENT_TEAM = XFZH4MQVN2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ReforestationSaga-App--Info.plist";
