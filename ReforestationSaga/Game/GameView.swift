@@ -241,7 +241,8 @@ struct GameView: View {
         .onChange(of: showMissionFailedPopup) { newValue in
             if newValue {
                 pauseGame()
-                GameMusicManager.shared.playSoundEffect(filename: "failed")
+                let soundEffectName: String = reason == "laut" ? "water" : "failed"
+                GameMusicManager.shared.playSoundEffect(filename: soundEffectName)
                 GameMusicManager.shared.pauseMusic()
             } else {
                 resumeGame()
